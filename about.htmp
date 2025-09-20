@@ -1,1 +1,40 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - something about ice and his cat</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
+    <canvas id="bg-canvas"></canvas>
+
+    <nav class="navbar">
+        <div class="navbar-brand">
+            something about ice and his cat
+        </div>
+        <div class="navbar-links">
+            <a href="index.html">หน้าหลัก</a>
+            <a href="about.html" class="active">เกี่ยวกับ</a>
+            <a href="contact.html">ติดต่อ</a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="content-box">
+            <div class="emoji-container">
+                🐱
+            </div>
+            <h1>เกี่ยวกับฉัน</h1>
+            <p>
+                หน้าเว็บนี้สร้างขึ้นเพื่อเล่าเรื่องราวของไอซ์และแมวของเขา
+                <br>
+                คุณสามารถติดตามเรื่องราวที่น่าสนใจของพวกเราได้ที่นี่ครับ
+            </p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
