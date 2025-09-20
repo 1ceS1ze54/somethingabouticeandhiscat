@@ -3,27 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello, World!</title>
+    <title>something about ice and his cat</title>
     <style>
-        /* CSS สำหรับจัดรูปแบบหน้าเว็บ */
+        /* CSS สำหรับจัดรูปแบบหน้าเว็บทั้งหมด */
+        :root {
+            /* กำหนดตัวแปรสีเพื่อให้แก้ไขง่าย */
+            --primary-color: #6a5acd; /* สีม่วงอ่อน */
+            --primary-bg-light: #f7f2ff; /* สีพื้นหลังม่วงอ่อนมาก */
+            --text-color: #4b0082; /* สีข้อความม่วงเข้ม */
+            --white-color: #ffffff;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            background-color: var(--primary-bg-light);
+            color: var(--text-color);
+            overflow: hidden; /* ซ่อนส่วนเกินของ animation */
+        }
+
+        /* --- Navbar Style --- */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: rgba(255, 255, 255, 0.8); /* สีขาวโปร่งแสง */
+            backdrop-filter: blur(10px); /* ทำให้พื้นหลังเบลอ */
+            border-radius: 0 0 20px 20px; /* ขอบด้านล่างมนๆ */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-color);
+            text-decoration: none;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .navbar-links a, .cute-button {
+            text-decoration: none;
+            color: var(--text-color);
+            padding: 0.7rem 1.2rem;
+            border-radius: 20px; /* ทำให้เป็นทรงมน */
+            font-weight: 500;
+            transition: all 0.3s ease;
+            background-color: var(--white-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .navbar-links a:hover, .cute-button:hover {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* --- Main Content Style --- */
+        .main-container {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
-            background-color: #f7f2ff; /* สีพื้นหลังม่วงอ่อนมาก */
-            color: #4b0082; /* สีข้อความม่วงเข้ม */
             text-align: center;
+            padding: 0 20px;
         }
 
-        .container {
-            background-color: #ffffff; /* สีพื้นหลังของกล่องเป็นสีขาว */
+        .content-box {
+            background-color: rgba(255, 255, 255, 0.85);
             padding: 40px 60px;
-            border-radius: 25px; /* ทำให้กล่องเป็นทรงมน */
+            border-radius: 25px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
         }
 
         h1 {
@@ -33,7 +96,7 @@
         }
 
         .emoji-container {
-            font-size: 4rem; /* ขนาดของอิโมจิ */
+            font-size: 4rem;
             margin-bottom: 20px;
         }
 
@@ -41,38 +104,126 @@
             font-size: 1.2rem;
             font-weight: 300;
             line-height: 1.5;
+            margin-bottom: 25px;
         }
 
-        a {
-            color: #6a5acd; /* สีลิงก์ม่วงอ่อน */
-            text-decoration: none;
-            font-weight: 500;
-            border-bottom: 2px solid #6a5acd; /* ขีดเส้นใต้ */
-            transition: color 0.3s, border-bottom 0.3s;
-        }
-
-        a:hover {
-            color: #483d8b; /* สีลิงก์เมื่อวางเมาส์ */
-            border-bottom-color: #483d8b;
+        /* --- Canvas for background animation --- */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="emoji-container">
-            🌸
+    <canvas id="bg-canvas"></canvas>
+
+    <nav class="navbar">
+        <div class="navbar-brand">
+            something about ice and his cat
         </div>
-        <h1>Hello, World! 👋</h1>
-        <p>
-            ยินดีต้อนรับสู่หน้าเว็บมินิมอลของฉัน
-            <br>
-            ทุกอย่างดูน่ารักและโค้งมนไปหมดเลยใช่ไหม? 😊
-        </p>
-        <p>
-            อยากรู้จักกันมากขึ้น? ลองไปดู <a href="#">โปรไฟล์ของฉัน</a>
-        </p>
+        <div class="navbar-links">
+            <a href="#">หน้าหลัก</a>
+            <a href="#">เกี่ยวกับ</a>
+            <a href="#" class="cute-button" onclick="alert('ปุ่มนี้ถูกคลิกแล้วจ้า! 😊');">ติดต่อ</a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="content-box">
+            <div class="emoji-container">
+                🌸
+            </div>
+            <h1>Hello, World! 👋</h1>
+            <p>
+                ยินดีต้อนรับสู่หน้าเว็บมินิมอลของฉัน
+                <br>
+                ทุกอย่างดูน่ารักและโค้งมนไปหมดเลยใช่ไหม? 😊
+            </p>
+        </div>
     </div>
 
+    <script>
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        // กำหนดขนาด canvas ให้เต็มจอ
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initParticles();
+        });
+
+        // สร้าง class ของอนุภาค (Particles)
+        class Particle {
+            constructor(x, y, radius, color) {
+                this.x = x;
+                this.y = y;
+                this.radius = radius;
+                this.color = color;
+                this.velocity = {
+                    x: (Math.random() - 0.5) * 0.5,
+                    y: (Math.random() - 0.5) * 0.5
+                };
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+            }
+
+            update() {
+                this.x += this.velocity.x;
+                this.y += this.velocity.y;
+
+                // ทำให้อนุภาคเด้งเมื่อชนขอบ
+                if (this.x + this.radius > canvas.width || this.x - this.radius < 0) {
+                    this.velocity.x = -this.velocity.x;
+                }
+                if (this.y + this.radius > canvas.height || this.y - this.radius < 0) {
+                    this.velocity.y = -this.velocity.y;
+                }
+
+                this.draw();
+            }
+        }
+
+        // สร้างอนุภาคเริ่มต้น
+        function initParticles() {
+            particles = [];
+            const numberOfParticles = 70;
+            const colors = ['#e6e6fa', '#d8bfd8', '#dda0dd', '#9370db', '#8a2be2'];
+            for (let i = 0; i < numberOfParticles; i++) {
+                const radius = Math.random() * 2 + 1;
+                const x = Math.random() * (canvas.width - radius * 2) + radius;
+                const y = Math.random() * (canvas.height - radius * 2) + radius;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                particles.push(new Particle(x, y, radius, color));
+            }
+        }
+
+        // วาดและอัปเดตอนุภาคในแต่ละเฟรม
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach(particle => {
+                particle.update();
+            });
+        }
+
+        initParticles();
+        animate();
+    </script>
 </body>
 </html>
