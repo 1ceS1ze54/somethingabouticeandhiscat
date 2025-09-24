@@ -3,15 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>Something About Ice and His Cat 🐾</title>
+  <title>Cat Gallery 🐾</title>
   <style>
     :root {
       --bg: #f6f7fb;
+      --navbar: #fff;
       --card: #fff;
       --text: #222;
-      --shadow: 0 4px 24px rgba(0,0,0,0.06);
+      --shadow: 0 4px 24px rgba(0,0,0,0.07);
       --accent: #222;
       --radius: 2rem;
+      --radius-sm: 1.1rem;
+      --primary: #111;
+      --nav-active: #e8e8ee;
     }
     body {
       min-height: 100vh;
@@ -20,57 +24,109 @@
       font-family: 'Segoe UI', 'Noto Sans Thai', Arial, sans-serif;
       color: var(--text);
       display: flex;
-      align-items: center;
-      justify-content: center;
       flex-direction: column;
+      align-items: center;
       overflow-x: hidden;
     }
-    .main-card {
-      background: var(--card);
+    .navbar {
+      width: 100vw;
+      background: var(--navbar);
       box-shadow: var(--shadow);
-      border-radius: var(--radius);
-      padding: 2.5rem 2rem 2rem 2rem;
-      margin-top: 3vh;
-      min-width: 320px;
-      max-width: 90vw;
-      text-align: center;
-      position: relative;
-      transition: box-shadow 0.3s;
+      border-radius: 0 0 var(--radius) var(--radius);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: .45rem 0 .35rem 0;
+      gap: 1.2rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      margin-bottom: 2.2rem;
+      backdrop-filter: blur(6px);
+      transition: box-shadow 0.2s;
     }
-    .main-card:hover {
-      box-shadow: 0 8px 32px rgba(0,0,0,.10);
-    }
-    .emoji {
-      font-size: 3.5rem;
-      filter: grayscale(1) brightness(0.15);
-      background: #fff;
-      border-radius: 50%;
-      padding: 0.6rem 0.8rem;
-      margin-bottom: 1.2rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
-      transition: filter 0.3s, transform 0.2s;
-      cursor: pointer;
-      user-select: none;
-    }
-    .emoji.active {
-      filter: grayscale(0) brightness(0.2) drop-shadow(0 0 8px #222);
-      transform: scale(1.12) rotate(-8deg);
-    }
-    h1 {
-      margin: 0 0 1rem 0;
-      font-weight: 600;
-      font-size: 2rem;
-      letter-spacing: 0.04em;
-      background: linear-gradient(90deg, #222, #444);
-      color: transparent;
-      background-clip: text;
-      -webkit-background-clip: text;
-    }
-    p {
-      margin: 0 0 1.2rem 0;
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.45em;
       font-size: 1.08rem;
+      padding: 0.6em 1.1em;
+      border-radius: var(--radius-sm);
+      background: none;
+      color: var(--primary);
+      border: none;
+      cursor: pointer;
+      outline: none;
+      font-weight: 500;
+      transition: background 0.18s, color 0.18s, scale 0.18s;
+      opacity: 0.93;
+    }
+    .nav-item.active, .nav-item:hover {
+      background: var(--nav-active);
+      color: var(--accent);
+      scale: 1.06;
+    }
+    .container {
+      width: 100%;
+      max-width: 1000px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2.5rem;
+      margin-bottom: 3rem;
+      z-index: 1;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 2.3rem;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 2vw;
+    }
+    .cat-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1.1rem 1rem 1.3rem 1rem;
+      transition: box-shadow 0.25s, transform 0.22s;
+      position: relative;
+      overflow: hidden;
+    }
+    .cat-card:hover {
+      box-shadow: 0 8px 32px rgba(0,0,0,.09);
+      transform: translateY(-6px) scale(1.022);
+    }
+    .cat-img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+      background: #eee;
+      margin-bottom: 1.05rem;
+      transition: transform 0.23s;
+    }
+    .cat-card:hover .cat-img {
+      transform: scale(1.07) rotate(-3deg);
+    }
+    .cat-name {
+      font-size: 1.12rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: var(--primary);
+      letter-spacing: 0.04em;
+    }
+    .cat-desc {
+      font-size: 0.97rem;
       color: #444;
-      opacity: .90;
+      opacity: .89;
+      margin-bottom: 0;
+      text-align: center;
+      min-height: 2.8em;
     }
     .bubbles {
       pointer-events: none;
@@ -84,28 +140,73 @@
       border-radius: 50%;
       background: #222;
       opacity: 0.07;
-      animation: rise 7s linear infinite;
+      animation: rise 8s linear infinite;
     }
     @keyframes rise {
       0% { transform: translateY(100vh) scale(0.6);}
       100% { transform: translateY(-20vh) scale(1.15);}
     }
-    /* Hide scrollbars, just in case */
-    ::-webkit-scrollbar { display: none; }
-    html { scrollbar-width: none; }
+    @media (max-width: 600px) {
+      .navbar { border-radius: 0 0 1.2rem 1.2rem; }
+      .container { padding: 0 2vw; }
+      .gallery { padding: 0 0.5vw;}
+    }
   </style>
 </head>
 <body>
   <div class="bubbles" id="bubbles"></div>
-  <div class="main-card">
-    <div class="emoji" id="emoji" title="เปลี่ยนอีโมจิ">🐾</div>
-    <h1>minimal & cute</h1>
-    <p>
-      สวัสดี!<br>
-      นี่คือเพจทดลองดีไซน์มินิมอล<br>
-      อิโมจิดำเท่ๆ วงกลม มลๆ<br>
-      <span style="font-size:0.93em;opacity:.6;">ลองคลิกอิโมจิดูสิ!</span>
-    </p>
+  <nav class="navbar">
+    <button class="nav-item active" data-page="gallery">🖼️ แกลเลอรี่</button>
+    <button class="nav-item" data-page="about">😺 เกี่ยวกับแมว</button>
+    <button class="nav-item" data-page="contact">📬 ติดต่อ</button>
+  </nav>
+  <div class="container" id="content">
+    <!-- Gallery Page (default) -->
+    <div id="gallery-page">
+      <h1 style="text-align:center;font-weight:600;letter-spacing:.02em;margin-bottom:2.2rem;">
+        รวมรูปแมวสุดคิ้วท์ 🐈‍⬛
+      </h1>
+      <div class="gallery">
+        <div class="cat-card">
+          <img class="cat-img" src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=400&q=80" alt="แมวขาวดำ">
+          <div class="cat-name">โมจิ</div>
+          <div class="cat-desc">แมวขาวดำสุดเฟี้ยว ชอบเล่นซ่อนแอบและนอนบนคีย์บอร์ด</div>
+        </div>
+        <div class="cat-card">
+          <img class="cat-img" src="https://images.unsplash.com/photo-1518715308788-3005759c61e9?auto=format&fit=crop&w=400&q=80" alt="แมวส้ม">
+          <div class="cat-name">โทฟู</div>
+          <div class="cat-desc">ส้มสายโซเชียล ใครชอบถ่ายเซลฟี่ต้องถูกใจแน่นอน</div>
+        </div>
+        <div class="cat-card">
+          <img class="cat-img" src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80" alt="แมวขนยาว">
+          <div class="cat-name">คาราเมล</div>
+          <div class="cat-desc">ขี้อ้อนและขนฟูที่สุดในบ้าน ชอบกลิ้งบนพรม</div>
+        </div>
+        <div class="cat-card">
+          <img class="cat-img" src="https://images.unsplash.com/photo-1518715308788-3005759c61e9?auto=format&fit=crop&w=400&q=80" alt="แมวขาว">
+          <div class="cat-name">ยูนิ</div>
+          <div class="cat-desc">ขาวจั๊วะตาใสเหมือนยูนิคอร์น ชอบนั่งข้างหน้าต่าง</div>
+        </div>
+      </div>
+    </div>
+    <!-- About Page -->
+    <div id="about-page" style="display:none;">
+      <h1 style="text-align:center;font-weight:600;margin-bottom:1.7rem;">😺 เกี่ยวกับแมว</h1>
+      <p style="text-align:center;font-size:1.09rem;padding:0 1rem 1rem 1rem;">
+        แมวเป็นสัตว์เลี้ยงยอดนิยม ด้วยความน่ารัก ขี้เล่น และเป็นเพื่อนที่ดีในบ้าน<br>
+        พวกเขามีเอกลักษณ์เฉพาะตัว ทั้งนิสัย พฤติกรรม และเสียงร้องที่ไม่เหมือนใคร<br>
+        <br>
+        แมวทุกตัวในแกลเลอรี่นี้ล้วนแต่มอบรอยยิ้มและความสุขให้เจ้าของเสมอ 🐾
+      </p>
+    </div>
+    <!-- Contact Page -->
+    <div id="contact-page" style="display:none;">
+      <h1 style="text-align:center;font-weight:600;margin-bottom:1.7rem;">📬 ติดต่อ</h1>
+      <p style="text-align:center;font-size:1.09rem;">
+        สนใจพูดคุยหรือแบ่งปันรูปแมวของคุณ?<br>
+        ทิ้งข้อความไว้ที่ <a href="mailto:somethingabouticeandhiscat@gmail.com" style="color:#222;text-decoration:underline;">อีเมลนี้</a> ได้เลย!
+      </p>
+    </div>
   </div>
   <script>
     // Floating black bubbles (background animation)
@@ -116,24 +217,25 @@
       b.className = 'bubble';
       b.style.width = b.style.height = random(40,80) + 'px';
       b.style.left = random(0, 100) + 'vw';
-      b.style.animationDelay = random(0,7) + 's';
+      b.style.animationDelay = random(0,8) + 's';
       bubbles.appendChild(b);
     }
 
-    // Emoji click interaction
-    const emojis = ["🐾", "🖤", "🦇", "😼", "🌑", "🐈‍⬛", "🎱", "⚫️", "🕶️", "💣"];
-    const emojiEl = document.getElementById('emoji');
-    emojiEl.addEventListener('click', () => {
-      let next;
-      do {
-        next = emojis[Math.floor(Math.random() * emojis.length)];
-      } while (next === emojiEl.textContent);
-      emojiEl.textContent = next;
-      emojiEl.classList.add('active');
-      setTimeout(() => emojiEl.classList.remove('active'), 300);
+    // Navbar SPA logic
+    const navButtons = document.querySelectorAll('.nav-item');
+    const pages = {
+      gallery: document.getElementById('gallery-page'),
+      about: document.getElementById('about-page'),
+      contact: document.getElementById('contact-page')
+    };
+    navButtons.forEach(btn => {
+      btn.onclick = () => {
+        navButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        Object.keys(pages).forEach(k => pages[k].style.display = 'none');
+        pages[btn.dataset.page].style.display = '';
+      };
     });
-
-    // Slight card hover animation (optional, already in CSS)
   </script>
 </body>
 </html>
