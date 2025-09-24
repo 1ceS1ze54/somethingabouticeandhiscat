@@ -88,7 +88,7 @@
     }
     .gallery {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(285px, 1fr));
       gap: 2.3rem;
       width: 100%;
       margin: 0 auto;
@@ -160,6 +160,119 @@
     .post-btn:hover {
       background: var(--button-hover);
       transform: scale(1.045) translateY(-2px);
+    }
+    .action-bar {
+      display: flex;
+      gap: 1.5em;
+      align-items: center;
+      margin: 1.2em 0 0.2em 0;
+    }
+    .like-btn, .comment-btn {
+      display: flex;
+      align-items: center;
+      border: none;
+      background: none;
+      font-size: 1.13rem;
+      cursor: pointer;
+      transition: color 0.18s, transform 0.15s;
+      color: #888;
+      padding: 0.35em 0.8em;
+      border-radius: 999px;
+      gap: 0.4em;
+      font-weight: 500;
+    }
+    .like-btn.liked { color: #d42655; }
+    .like-btn:hover, .comment-btn:hover { color: #222; transform: scale(1.09); background: #f6f6f8; }
+    .like-count, .comment-count {
+      font-size: 1.02rem;
+      margin-left: 0.18em;
+    }
+    .comments-section {
+      width: 100%;
+      margin-top: 1em;
+      padding-top: 0.5em;
+      border-top: 1px solid #f0f0f0;
+      background: #fafbfc;
+      border-radius: 1em;
+    }
+    .comment-item {
+      margin: 0.7em 0 0.5em 0;
+      padding: 0.65em 0.95em 0.5em 0.95em;
+      background: #fff;
+      border-radius: 1em;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.03);
+      font-size: 0.99rem;
+      word-break: break-word;
+      position: relative;
+    }
+    .comment-user {
+      font-weight: 600;
+      margin-bottom: 0.05em;
+      color: #111;
+      font-size: 1em;
+      display: inline-block;
+    }
+    .comment-content {
+      font-size: 0.97em;
+      margin-bottom: 0.2em;
+    }
+    .reply-btn {
+      font-size: 0.93em;
+      color: #888;
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-left: 0.3em;
+      transition: color 0.16s;
+      border-radius: 0.5em;
+      padding: 0.12em 0.7em;
+    }
+    .reply-btn:hover { color: #222; background: #f3f3f6; }
+    .reply-section {
+      margin-left: 1.7em;
+      margin-top: 0.3em;
+    }
+    .reply-form {
+      display: flex;
+      align-items: flex-end;
+      gap: 0.5em;
+      margin-top: 0.5em;
+    }
+    .reply-form textarea, .comment-form textarea {
+      font-size: 1em;
+      padding: 0.4em 0.9em;
+      border-radius: 999px;
+      border: 1.5px solid #eee;
+      background: #fafbfe;
+      resize: none;
+      width: 220px;
+      outline: none;
+      transition: border 0.18s, background 0.18s;
+    }
+    .reply-form textarea:focus, .comment-form textarea:focus {
+      border: 1.5px solid #222;
+      background: #fff;
+    }
+    .reply-form button, .comment-form button {
+      background: var(--button-bg);
+      color: var(--button-text);
+      border: none;
+      border-radius: 999px;
+      font-size: 1em;
+      padding: 0.42em 1.5em;
+      cursor: pointer;
+      transition: background 0.18s, transform 0.13s;
+      font-weight: 600;
+    }
+    .reply-form button:hover, .comment-form button:hover {
+      background: var(--button-hover);
+      transform: scale(1.04);
+    }
+    .comment-form {
+      display: flex;
+      align-items: flex-end;
+      gap: 0.6em;
+      margin: 1em 0 0 0;
     }
     /* Modal */
     .modal-bg {
@@ -422,22 +535,32 @@
       {
         img: "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=400&q=80",
         name: "โมจิ",
-        desc: "แมวขาวดำสุดเฟี้ยว ชอบเล่นซ่อนแอบและนอนบนคีย์บอร์ด"
+        desc: "แมวขาวดำสุดเฟี้ยว ชอบเล่นซ่อนแอบและนอนบนคีย์บอร์ด",
+        likes: 2,
+        comments: [
+          { user: "Guest", content: "น่ารักมากเลย!" }
+        ]
       },
       {
         img: "https://images.unsplash.com/photo-1518715308788-3005759c61e9?auto=format&fit=crop&w=400&q=80",
         name: "โทฟู",
-        desc: "ส้มสายโซเชียล ใครชอบถ่ายเซลฟี่ต้องถูกใจแน่นอน"
+        desc: "ส้มสายโซเชียล ใครชอบถ่ายเซลฟี่ต้องถูกใจแน่นอน",
+        likes: 1,
+        comments: []
       },
       {
         img: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
         name: "คาราเมล",
-        desc: "ขี้อ้อนและขนฟูที่สุดในบ้าน ชอบกลิ้งบนพรม"
+        desc: "ขี้อ้อนและขนฟูที่สุดในบ้าน ชอบกลิ้งบนพรม",
+        likes: 0,
+        comments: []
       },
       {
         img: "https://images.unsplash.com/photo-1518715308788-3005759c61e9?auto=format&fit=crop&w=400&q=80",
         name: "ยูนิ",
-        desc: "ขาวจั๊วะตาใสเหมือนยูนิคอร์น ชอบนั่งข้างหน้าต่าง"
+        desc: "ขาวจั๊วะตาใสเหมือนยูนิคอร์น ชอบนั่งข้างหน้าต่าง",
+        likes: 0,
+        comments: []
       }
     ];
 
@@ -445,25 +568,149 @@
     function loadCats() {
       let cats = [];
       try {
-        cats = JSON.parse(localStorage.getItem('cat-posts')) || defaultCats;
+        cats = JSON.parse(localStorage.getItem('cat-posts-v3')) || defaultCats;
       } catch { cats = defaultCats; }
       return cats;
     }
     function saveCats(cats) {
-      localStorage.setItem('cat-posts', JSON.stringify(cats));
+      localStorage.setItem('cat-posts-v3', JSON.stringify(cats));
     }
+
+    // --- UI for Comments/Replies ---
+    function renderComments(comments = [], parentIndex = '', parentArr = comments) {
+      let html = "";
+      comments.forEach((c, i) => {
+        const cidx = parentIndex === '' ? i+'' : parentIndex + '-' + i;
+        html += `
+          <div class="comment-item" data-comment="${cidx}">
+            <span class="comment-user">${c.user || "Guest"}</span>:
+            <span class="comment-content">${c.content}</span>
+            <button class="reply-btn" data-reply="${cidx}">ตอบกลับ</button>
+            <div class="reply-section">
+              ${c.replies ? renderComments(c.replies, cidx, c.replies) : ""}
+            </div>
+            <div class="reply-form" style="display:none;" data-form="${cidx}">
+              <textarea placeholder="เขียนตอบกลับ..." rows="1"></textarea>
+              <button>โพสต์</button>
+            </div>
+          </div>
+        `;
+      });
+      return html;
+    }
+
+    // --- Render all posts ---
     function renderCats() {
       const cats = loadCats();
       gallery.innerHTML = '';
-      cats.slice().reverse().forEach(cat => {
+      cats.slice().reverse().forEach((cat, idx) => {
+        const realIdx = cats.length - 1 - idx; // for reverse order
+        const liked = (cat.likedByMe ? "liked" : "");
+        const likes = cat.likes || 0;
+        const comments = cat.comments || [];
         const card = document.createElement('div');
         card.className = 'cat-card';
         card.innerHTML = `
           <img class="cat-img" src="${cat.img}" alt="${cat.name}">
           <div class="cat-name">${cat.name}</div>
           <div class="cat-desc">${cat.desc || ''}</div>
+          <div class="action-bar">
+            <button class="like-btn ${liked}" data-like="${realIdx}">❤️ <span class="like-count">${likes}</span></button>
+            <button class="comment-btn" data-comment="${realIdx}">💬 <span class="comment-count">${comments.length}</span></button>
+          </div>
+          <div class="comments-section" style="display:none;" data-section="${realIdx}">
+            <div class="comment-list">
+              ${renderComments(comments)}
+            </div>
+            <form class="comment-form" data-form="${realIdx}">
+              <textarea placeholder="แสดงความคิดเห็น..." rows="1" required></textarea>
+              <button type="submit">โพสต์</button>
+            </form>
+          </div>
         `;
         gallery.appendChild(card);
+      });
+
+      // Like button logic
+      document.querySelectorAll('.like-btn').forEach(btn => {
+        btn.onclick = function() {
+          const idx = +btn.getAttribute('data-like');
+          const cats = loadCats();
+          if (!cats[idx].likes) cats[idx].likes = 0;
+          cats[idx].likedByMe = !cats[idx].likedByMe;
+          cats[idx].likes += cats[idx].likedByMe ? 1 : -1;
+          saveCats(cats);
+          renderCats();
+        };
+      });
+
+      // Comment section show/hide
+      document.querySelectorAll('.comment-btn').forEach(btn => {
+        btn.onclick = function() {
+          const idx = btn.getAttribute('data-comment');
+          const section = document.querySelector(`.comments-section[data-section="${idx}"]`);
+          if (section) section.style.display = (section.style.display === 'none' ? '' : 'none');
+        };
+      });
+
+      // Add comment
+      document.querySelectorAll('.comment-form').forEach(form => {
+        form.onsubmit = function(e) {
+          e.preventDefault();
+          const idx = form.getAttribute('data-form');
+          const textarea = form.querySelector('textarea');
+          const value = textarea.value.trim();
+          if (!value) return;
+          const cats = loadCats();
+          cats[idx].comments = cats[idx].comments || [];
+          cats[idx].comments.push({ user: "Guest", content: value, replies: [] });
+          saveCats(cats);
+          textarea.value = '';
+          renderCats();
+          // Open the comment section again:
+          const section = document.querySelector(`.comments-section[data-section="${idx}"]`);
+          if (section) section.style.display = '';
+        };
+      });
+
+      // Reply button show/hide
+      document.querySelectorAll('.reply-btn').forEach(btn => {
+        btn.onclick = function() {
+          const cidx = btn.getAttribute('data-reply');
+          const replyForm = document.querySelector(`.reply-form[data-form="${cidx}"]`);
+          if (replyForm) replyForm.style.display = (replyForm.style.display === 'none' ? '' : 'none');
+        };
+      });
+
+      // Reply form submit
+      document.querySelectorAll('.reply-form').forEach(form => {
+        const btn = form.querySelector('button');
+        btn.onclick = function() {
+          const textarea = form.querySelector('textarea');
+          const value = textarea.value.trim();
+          if (!value) return;
+          const cidx = form.getAttribute('data-form');
+          const cats = loadCats();
+          // cidx is e.g. "3-1-0"
+          const [catIdx, ...replyPath] = cidx.split('-').map(Number);
+          let comments = cats[catIdx].comments;
+          let commentObj;
+          for (let i = 0; i < replyPath.length; i++) {
+            commentObj = comments[replyPath[i]];
+            if (!commentObj.replies) commentObj.replies = [];
+            if (i === replyPath.length - 1) {
+              commentObj.replies.push({ user: "Guest", content: value, replies: [] });
+            } else {
+              comments = commentObj.replies;
+            }
+          }
+          saveCats(cats);
+          textarea.value = '';
+          renderCats();
+          // Open the comment section again:
+          const section = document.querySelector(`.comments-section[data-section="${catIdx}"]`);
+          if (section) section.style.display = '';
+        };
       });
     }
     renderCats();
@@ -479,7 +726,7 @@
       reader.onload = function(evt) {
         const img = evt.target.result;
         const cats = loadCats();
-        cats.push({ img, name, desc });
+        cats.push({ img, name, desc, likes: 0, comments: [] });
         saveCats(cats);
         renderCats();
         modalBg.classList.remove('show');
