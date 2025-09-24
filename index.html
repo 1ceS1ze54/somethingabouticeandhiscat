@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>Cat Gallery 🐾</title>
+  <title>Cat Gallery Forum 🐾</title>
   <style>
     :root {
       --bg: #f6f7fb;
@@ -16,6 +16,10 @@
       --radius-sm: 1.1rem;
       --primary: #111;
       --nav-active: #e8e8ee;
+      --button-bg: #1a1a1a;
+      --button-hover: #353535;
+      --button-text: #fff;
+      --modal-bg: rgba(0,0,0,0.16);
     }
     body {
       min-height: 100vh;
@@ -76,6 +80,12 @@
       margin-bottom: 3rem;
       z-index: 1;
     }
+    .gallery-forum {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      gap: 2.4rem;
+    }
     .gallery {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
@@ -128,6 +138,132 @@
       text-align: center;
       min-height: 2.8em;
     }
+    .post-btn {
+      background: var(--button-bg);
+      color: var(--button-text);
+      border: none;
+      border-radius: 999px;
+      font-size: 1.13rem;
+      font-weight: 600;
+      padding: 0.75em 2.2em;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+      cursor: pointer;
+      outline: none;
+      transition: background 0.22s, transform 0.17s;
+      margin-bottom: 0.7rem;
+      margin-left: auto;
+      margin-right: 2vw;
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+    }
+    .post-btn:hover {
+      background: var(--button-hover);
+      transform: scale(1.045) translateY(-2px);
+    }
+    /* Modal */
+    .modal-bg {
+      display: none;
+      position: fixed;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      background: var(--modal-bg);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+      animation: fadein 0.2s;
+    }
+    .modal-bg.show { display: flex; }
+    @keyframes fadein {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    .modal {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2.1rem 1.7rem 1.7rem 1.7rem;
+      min-width: 320px;
+      max-width: 90vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      gap: 1.3rem;
+    }
+    .modal h2 {
+      margin: 0 0 0.2em 0;
+      font-weight: 700;
+      font-size: 1.35rem;
+      text-align: center;
+    }
+    .close-btn {
+      position: absolute;
+      top: 1.1rem; right: 1.2rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #888;
+      cursor: pointer;
+      border-radius: 50%;
+      padding: 0.1em 0.4em;
+      transition: background 0.15s;
+    }
+    .close-btn:hover { background: #eee; }
+    .modal form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+      align-items: center;
+    }
+    .modal input, .modal textarea {
+      border: 1.5px solid #eee;
+      background: #fafbfe;
+      border-radius: 1.1em;
+      font-size: 1.08rem;
+      padding: 0.7em 1em;
+      width: 245px;
+      resize: none;
+      outline: none;
+      transition: border 0.18s, background 0.18s;
+    }
+    .modal input:focus, .modal textarea:focus {
+      border: 1.5px solid #222;
+      background: #fff;
+    }
+    .modal label {
+      font-size: 0.99rem;
+      color: #222;
+      align-self: flex-start;
+      margin-bottom: -0.5em;
+      margin-left: 0.1em;
+      font-weight: 500;
+    }
+    .modal .submit-btn {
+      background: var(--button-bg);
+      color: var(--button-text);
+      border: none;
+      border-radius: 999px;
+      font-size: 1.08rem;
+      font-weight: 600;
+      padding: 0.7em 2.1em;
+      cursor: pointer;
+      transition: background 0.18s, transform 0.17s;
+      margin-top: 0.5rem;
+    }
+    .modal .submit-btn:hover {
+      background: var(--button-hover);
+      transform: scale(1.04);
+    }
+    .preview-img {
+      display: block;
+      margin: 0 auto 0.7em auto;
+      width: 100px; height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+      background: #eee;
+    }
     .bubbles {
       pointer-events: none;
       position: fixed;
@@ -150,42 +286,30 @@
       .navbar { border-radius: 0 0 1.2rem 1.2rem; }
       .container { padding: 0 2vw; }
       .gallery { padding: 0 0.5vw;}
+      .modal { padding: 1.2rem 0.7rem 1rem 0.7rem; }
+      .modal input, .modal textarea { width: 95vw; max-width: 99vw; }
     }
   </style>
 </head>
 <body>
   <div class="bubbles" id="bubbles"></div>
   <nav class="navbar">
-    <button class="nav-item active" data-page="gallery">🖼️ แกลเลอรี่</button>
+    <button class="nav-item active" data-page="gallery">🖼️ ฟอรั่มแมว</button>
     <button class="nav-item" data-page="about">😺 เกี่ยวกับแมว</button>
     <button class="nav-item" data-page="contact">📬 ติดต่อ</button>
   </nav>
   <div class="container" id="content">
-    <!-- Gallery Page (default) -->
+    <!-- Gallery Forum Page (default) -->
     <div id="gallery-page">
-      <h1 style="text-align:center;font-weight:600;letter-spacing:.02em;margin-bottom:2.2rem;">
-        รวมรูปแมวสุดคิ้วท์ 🐈‍⬛
-      </h1>
-      <div class="gallery">
-        <div class="cat-card">
-          <img class="cat-img" src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=400&q=80" alt="แมวขาวดำ">
-          <div class="cat-name">โมจิ</div>
-          <div class="cat-desc">แมวขาวดำสุดเฟี้ยว ชอบเล่นซ่อนแอบและนอนบนคีย์บอร์ด</div>
-        </div>
-        <div class="cat-card">
-          <img class="cat-img" src="https://images.unsplash.com/photo-1518715308788-3005759c61e9?auto=format&fit=crop&w=400&q=80" alt="แมวส้ม">
-          <div class="cat-name">โทฟู</div>
-          <div class="cat-desc">ส้มสายโซเชียล ใครชอบถ่ายเซลฟี่ต้องถูกใจแน่นอน</div>
-        </div>
-        <div class="cat-card">
-          <img class="cat-img" src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80" alt="แมวขนยาว">
-          <div class="cat-name">คาราเมล</div>
-          <div class="cat-desc">ขี้อ้อนและขนฟูที่สุดในบ้าน ชอบกลิ้งบนพรม</div>
-        </div>
-        <div class="cat-card">
-          <img class="cat-img" src="https://images.unsplash.com/photo-1518715308788-3005759c61e9?auto=format&fit=crop&w=400&q=80" alt="แมวขาว">
-          <div class="cat-name">ยูนิ</div>
-          <div class="cat-desc">ขาวจั๊วะตาใสเหมือนยูนิคอร์น ชอบนั่งข้างหน้าต่าง</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;width:100%;">
+        <h1 style="font-weight:600;letter-spacing:.02em;margin-bottom:2.2rem;">
+          ฟอรั่มโพสต์รูปแมว 🐈‍⬛
+        </h1>
+        <button class="post-btn" id="open-modal"><span>➕ โพสรูปแมว</span></button>
+      </div>
+      <div class="gallery-forum">
+        <div class="gallery" id="cat-gallery">
+          <!-- Cat posts will appear here -->
         </div>
       </div>
     </div>
@@ -196,7 +320,7 @@
         แมวเป็นสัตว์เลี้ยงยอดนิยม ด้วยความน่ารัก ขี้เล่น และเป็นเพื่อนที่ดีในบ้าน<br>
         พวกเขามีเอกลักษณ์เฉพาะตัว ทั้งนิสัย พฤติกรรม และเสียงร้องที่ไม่เหมือนใคร<br>
         <br>
-        แมวทุกตัวในแกลเลอรี่นี้ล้วนแต่มอบรอยยิ้มและความสุขให้เจ้าของเสมอ 🐾
+        แมวทุกตัวในฟอรั่มนี้ล้วนแต่มอบรอยยิ้มและความสุขให้เจ้าของเสมอ 🐾
       </p>
     </div>
     <!-- Contact Page -->
@@ -206,6 +330,23 @@
         สนใจพูดคุยหรือแบ่งปันรูปแมวของคุณ?<br>
         ทิ้งข้อความไว้ที่ <a href="mailto:somethingabouticeandhiscat@gmail.com" style="color:#222;text-decoration:underline;">อีเมลนี้</a> ได้เลย!
       </p>
+    </div>
+  </div>
+  <!-- Modal for new cat post -->
+  <div class="modal-bg" id="modal-bg">
+    <div class="modal">
+      <button class="close-btn" id="close-modal" title="ปิด">&times;</button>
+      <h2>โพสรูปแมวของคุณ</h2>
+      <form id="cat-form">
+        <label for="cat-img">เลือกรูปแมว</label>
+        <input type="file" id="cat-img" accept="image/*" required>
+        <img id="img-preview" class="preview-img" style="display:none;">
+        <label for="cat-name">ชื่อแมว</label>
+        <input type="text" id="cat-name" maxlength="32" placeholder="ชื่อแมวของคุณ" required>
+        <label for="cat-desc">คำอธิบาย</label>
+        <textarea id="cat-desc" maxlength="80" rows="2" placeholder="เล่าเรื่องราวความน่ารัก"></textarea>
+        <button type="submit" class="submit-btn">โพสต์เลย!</button>
+      </form>
     </div>
   </div>
   <script>
@@ -236,6 +377,118 @@
         pages[btn.dataset.page].style.display = '';
       };
     });
+
+    // Forum logic: Modal show/hide
+    const modalBg = document.getElementById('modal-bg');
+    document.getElementById('open-modal').onclick = () => {
+      modalBg.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+    document.getElementById('close-modal').onclick = () => {
+      modalBg.classList.remove('show');
+      document.body.style.overflow = '';
+      document.getElementById('cat-form').reset();
+      document.getElementById('img-preview').style.display = 'none';
+    }
+    modalBg.onclick = e => {
+      if (e.target === modalBg) {
+        modalBg.classList.remove('show');
+        document.body.style.overflow = '';
+        document.getElementById('cat-form').reset();
+        document.getElementById('img-preview').style.display = 'none';
+      }
+    };
+
+    // Preview image logic
+    const imgInput = document.getElementById('cat-img');
+    const imgPreview = document.getElementById('img-preview');
+    imgInput.onchange = function() {
+      if (this.files && this.files[0]) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          imgPreview.src = e.target.result;
+          imgPreview.style.display = 'block';
+        };
+        reader.readAsDataURL(this.files[0]);
+      } else {
+        imgPreview.style.display = 'none';
+      }
+    };
+
+    // Forum logic: store and show posts
+    const gallery = document.getElementById('cat-gallery');
+    // Default posts
+    const defaultCats = [
+      {
+        img: "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=400&q=80",
+        name: "โมจิ",
+        desc: "แมวขาวดำสุดเฟี้ยว ชอบเล่นซ่อนแอบและนอนบนคีย์บอร์ด"
+      },
+      {
+        img: "https://images.unsplash.com/photo-1518715308788-3005759c61e9?auto=format&fit=crop&w=400&q=80",
+        name: "โทฟู",
+        desc: "ส้มสายโซเชียล ใครชอบถ่ายเซลฟี่ต้องถูกใจแน่นอน"
+      },
+      {
+        img: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
+        name: "คาราเมล",
+        desc: "ขี้อ้อนและขนฟูที่สุดในบ้าน ชอบกลิ้งบนพรม"
+      },
+      {
+        img: "https://images.unsplash.com/photo-1518715308788-3005759c61e9?auto=format&fit=crop&w=400&q=80",
+        name: "ยูนิ",
+        desc: "ขาวจั๊วะตาใสเหมือนยูนิคอร์น ชอบนั่งข้างหน้าต่าง"
+      }
+    ];
+
+    // Load posts from localStorage or use default
+    function loadCats() {
+      let cats = [];
+      try {
+        cats = JSON.parse(localStorage.getItem('cat-posts')) || defaultCats;
+      } catch { cats = defaultCats; }
+      return cats;
+    }
+    function saveCats(cats) {
+      localStorage.setItem('cat-posts', JSON.stringify(cats));
+    }
+    function renderCats() {
+      const cats = loadCats();
+      gallery.innerHTML = '';
+      cats.slice().reverse().forEach(cat => {
+        const card = document.createElement('div');
+        card.className = 'cat-card';
+        card.innerHTML = `
+          <img class="cat-img" src="${cat.img}" alt="${cat.name}">
+          <div class="cat-name">${cat.name}</div>
+          <div class="cat-desc">${cat.desc || ''}</div>
+        `;
+        gallery.appendChild(card);
+      });
+    }
+    renderCats();
+
+    // Handle post new cat
+    document.getElementById('cat-form').onsubmit = function(e) {
+      e.preventDefault();
+      const file = imgInput.files[0];
+      const name = document.getElementById('cat-name').value.trim() || "แมวไม่ระบุชื่อ";
+      const desc = document.getElementById('cat-desc').value.trim();
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const img = evt.target.result;
+        const cats = loadCats();
+        cats.push({ img, name, desc });
+        saveCats(cats);
+        renderCats();
+        modalBg.classList.remove('show');
+        document.body.style.overflow = '';
+        document.getElementById('cat-form').reset();
+        imgPreview.style.display = 'none';
+      }
+      reader.readAsDataURL(file);
+    };
   </script>
 </body>
 </html>
