@@ -1,40 +1,139 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Something about Ice and his cat</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Something About Ice and His Cat 🐾</title>
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --card: #fff;
+      --text: #222;
+      --shadow: 0 4px 24px rgba(0,0,0,0.06);
+      --accent: #222;
+      --radius: 2rem;
+    }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      background: var(--bg);
+      font-family: 'Segoe UI', 'Noto Sans Thai', Arial, sans-serif;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+    .main-card {
+      background: var(--card);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem 2rem 2rem;
+      margin-top: 3vh;
+      min-width: 320px;
+      max-width: 90vw;
+      text-align: center;
+      position: relative;
+      transition: box-shadow 0.3s;
+    }
+    .main-card:hover {
+      box-shadow: 0 8px 32px rgba(0,0,0,.10);
+    }
+    .emoji {
+      font-size: 3.5rem;
+      filter: grayscale(1) brightness(0.15);
+      background: #fff;
+      border-radius: 50%;
+      padding: 0.6rem 0.8rem;
+      margin-bottom: 1.2rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+      transition: filter 0.3s, transform 0.2s;
+      cursor: pointer;
+      user-select: none;
+    }
+    .emoji.active {
+      filter: grayscale(0) brightness(0.2) drop-shadow(0 0 8px #222);
+      transform: scale(1.12) rotate(-8deg);
+    }
+    h1 {
+      margin: 0 0 1rem 0;
+      font-weight: 600;
+      font-size: 2rem;
+      letter-spacing: 0.04em;
+      background: linear-gradient(90deg, #222, #444);
+      color: transparent;
+      background-clip: text;
+      -webkit-background-clip: text;
+    }
+    p {
+      margin: 0 0 1.2rem 0;
+      font-size: 1.08rem;
+      color: #444;
+      opacity: .90;
+    }
+    .bubbles {
+      pointer-events: none;
+      position: fixed;
+      z-index: 0;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      overflow: hidden;
+    }
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      background: #222;
+      opacity: 0.07;
+      animation: rise 7s linear infinite;
+    }
+    @keyframes rise {
+      0% { transform: translateY(100vh) scale(0.6);}
+      100% { transform: translateY(-20vh) scale(1.15);}
+    }
+    /* Hide scrollbars, just in case */
+    ::-webkit-scrollbar { display: none; }
+    html { scrollbar-width: none; }
+  </style>
 </head>
 <body>
+  <div class="bubbles" id="bubbles"></div>
+  <div class="main-card">
+    <div class="emoji" id="emoji" title="เปลี่ยนอีโมจิ">🐾</div>
+    <h1>minimal & cute</h1>
+    <p>
+      สวัสดี!<br>
+      นี่คือเพจทดลองดีไซน์มินิมอล<br>
+      อิโมจิดำเท่ๆ วงกลม มลๆ<br>
+      <span style="font-size:0.93em;opacity:.6;">ลองคลิกอิโมจิดูสิ!</span>
+    </p>
+  </div>
+  <script>
+    // Floating black bubbles (background animation)
+    function random(min, max) { return Math.random() * (max - min) + min; }
+    const bubbles = document.getElementById('bubbles');
+    for (let i = 0; i < 16; i++) {
+      const b = document.createElement('div');
+      b.className = 'bubble';
+      b.style.width = b.style.height = random(40,80) + 'px';
+      b.style.left = random(0, 100) + 'vw';
+      b.style.animationDelay = random(0,7) + 's';
+      bubbles.appendChild(b);
+    }
 
-    <canvas id="bg-canvas"></canvas>
+    // Emoji click interaction
+    const emojis = ["🐾", "🖤", "🦇", "😼", "🌑", "🐈‍⬛", "🎱", "⚫️", "🕶️", "💣"];
+    const emojiEl = document.getElementById('emoji');
+    emojiEl.addEventListener('click', () => {
+      let next;
+      do {
+        next = emojis[Math.floor(Math.random() * emojis.length)];
+      } while (next === emojiEl.textContent);
+      emojiEl.textContent = next;
+      emojiEl.classList.add('active');
+      setTimeout(() => emojiEl.classList.remove('active'), 300);
+    });
 
-    <nav class="navbar">
-        <div class="navbar-brand">
-            Something about Ice and his cat
-        </div>
-        <div class="navbar-links">
-            <a href="index.html" class="active">หน้าหลัก</a>
-            <a href="about.html">เกี่ยวกับ</a>
-            <a href="contact.html">ติดต่อ</a>
-        </div>
-    </nav>
-
-    <div class="main-container">
-        <div class="content-box">
-            <div class="emoji-container">
-                🌸
-            </div>
-            <h1>Hello, World! 👋</h1>
-            <p>
-                ยินดีต้อนรับสู่หน้าเว็บของอั้ยซี่
-                <br>
-                กำลัง Demo เว็บอยู่เดี๋ยวเอารูปแมวมาแป๊ะ 😊
-            </p>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
+    // Slight card hover animation (optional, already in CSS)
+  </script>
 </body>
 </html>
