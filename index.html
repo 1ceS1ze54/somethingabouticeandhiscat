@@ -3,47 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello, Minimalist! 🌸</title>
+    <title>Minimal Purple Navbar ✨</title>
     <style>
         /* ตัวแปรสี */
         :root {
             --primary-color: #6a1b9a; /* ม่วงเข้ม */
             --light-color: #e1bee7; /* ม่วงอ่อนพาสเทล */
             --background-color: #ffffff; /* สีขาว */
-            --text-color: #333333; /* สีเทาเข้มสำหรับข้อความ */
+            --text-color: #333333; /* สีเทาเข้ม */
+            --nav-bg: #9c27b0; /* ม่วงสำหรับ Navbar */
+            --nav-text: #ffffff; /* สีขาวสำหรับข้อความใน Navbar */
         }
 
         /* การตั้งค่าพื้นฐาน */
         body {
-            font-family: 'Arial', sans-serif; /* ฟอนต์เรียบง่าย */
+            font-family: 'Arial', sans-serif;
             background-color: var(--background-color);
             color: var(--text-color);
             margin: 0;
-            padding: 20px;
+            padding-top: 80px; /* เว้นที่ว่างสำหรับ Navbar */
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             min-height: 100vh;
             text-align: center;
-            flex-direction: column;
         }
 
-        /* องค์ประกอบหลัก: เน้นความกลมมน */
+        /*
+         * --- NAVBAR สไตล์มินิมอล โค้งมน ---
+         */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--nav-bg);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 10px 20px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            /* เพิ่มความโค้งมนที่ขอบด้านล่างเท่านั้น */
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            transition: background-color 0.4s ease; /* เอฟเฟกต์เปลี่ยนสี */
+        }
+
+        .nav-logo {
+            color: var(--nav-text);
+            text-decoration: none;
+            font-size: 1.5em;
+            font-weight: bold;
+            letter-spacing: 1px;
+            padding: 5px 0;
+        }
+
+        .nav-links {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .nav-links a {
+            color: var(--nav-text);
+            text-decoration: none;
+            padding: 8px 15px;
+            margin: 0 5px;
+            border-radius: 20px; /* ทำให้ลิงก์โค้งมน */
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .nav-links a:hover {
+            background-color: var(--light-color); /* ม่วงอ่อนเมื่อโฮเวอร์ */
+            color: var(--primary-color);
+            transform: translateY(-2px); /* เอฟเฟกต์ยกขึ้น */
+        }
+
+        /*
+         * --- เมนูแฮมเบอร์เกอร์ (สำหรับมือถือ) ---
+         */
+        .burger {
+            display: none; /* ซ่อนไว้สำหรับเดสก์ท็อป */
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .burger div {
+            width: 25px;
+            height: 3px;
+            background-color: var(--nav-text);
+            margin: 5px;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        /*
+         * --- เนื้อหาหลัก ---
+         */
         .container {
-            background-color: var(--light-color); /* ใช้ม่วงอ่อนเป็นพื้นหลัง */
+            background-color: var(--light-color);
             padding: 40px 60px;
-            border-radius: 50px; /* ทำให้โค้งมนมาก ๆ */
-            box-shadow: 0 10px 30px rgba(106, 27, 154, 0.2); /* เงาอ่อน ๆ สีม่วง */
-            max-width: 400px;
+            border-radius: 50px; /* โค้งมนมาก ๆ */
+            box-shadow: 0 10px 30px rgba(106, 27, 154, 0.2);
+            max-width: 500px;
             width: 90%;
-            transition: transform 0.3s ease-in-out;
+            margin-top: 40px;
         }
 
-        .container:hover {
-            transform: scale(1.02); /* เอฟเฟกต์เล็กน้อยเมื่อวางเมาส์ */
-        }
-
-        /* หัวข้อ */
         h1 {
             color: var(--primary-color);
             font-size: 2.5em;
@@ -57,59 +125,140 @@
             margin-bottom: 30px;
         }
 
-        /* ปุ่ม: รูปร่าง Pill-shaped */
-        .button {
-            display: inline-block;
-            background-color: var(--primary-color);
-            color: var(--background-color);
-            padding: 12px 30px;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 30px; /* ทำให้กลมเหมือนแคปซูล/เม็ดยา */
-            transition: background-color 0.3s, transform 0.2s;
-            box-shadow: 0 4px 10px rgba(106, 27, 154, 0.4);
-        }
+        /*
+         * --- สไตล์สำหรับมือถือ (Responsive) ---
+         */
+        @media screen and (max-width: 768px) {
+            .nav-links {
+                position: absolute;
+                right: 0;
+                top: 70px; /* ใต้ navbar */
+                height: 0; /* เริ่มต้นด้วยความสูง 0 */
+                background-color: var(--nav-bg);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                clip-path: circle(0% at 100% 0%); /* ซ่อนเมนูด้วยการตัดขอบแบบกลม */
+                transition: clip-path 0.5s ease-out, height 0.5s ease;
+            }
 
-        .button:hover {
-            background-color: #9c27b0; /* ม่วงสว่างขึ้นเมื่อโฮเวอร์ */
-            transform: translateY(-2px);
-        }
+            .nav-links.nav-active {
+                height: 220px; /* ความสูงเมื่อเปิด */
+                clip-path: circle(141.4% at 100% 0%); /* แสดงเมนู */
+            }
 
-        /* ลิงก์ด้านล่าง */
-        .footer-link {
-            margin-top: 30px;
-            font-size: 0.9em;
-            color: var(--primary-color);
-            text-decoration: none;
-            padding: 8px 15px;
-            border: 2px solid var(--light-color);
-            border-radius: 20px; /* โค้งมน */
-            transition: background-color 0.3s;
-        }
+            .nav-links li {
+                opacity: 0;
+                transition: opacity 0.5s ease-in 0.3s;
+            }
 
-        .footer-link:hover {
-            background-color: var(--light-color);
-        }
+            .nav-links.nav-active li {
+                opacity: 1;
+            }
 
-        /* ไอคอน (สมมติว่าใช้ตัวอักษรหรืออิโมจิ) */
-        .icon {
-            font-size: 3em;
-            color: var(--primary-color);
-            margin-bottom: 15px;
-            line-height: 1; /* จัดบรรทัดให้ชิด */
+            .burger {
+                display: block;
+            }
+
+            /* แอนิเมชันสำหรับปุ่มแฮมเบอร์เกอร์ */
+            .toggle .line1 {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+            .toggle .line2 {
+                opacity: 0;
+            }
+            .toggle .line3 {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
         }
     </style>
 </head>
 <body>
 
+    <nav class="navbar" id="main-navbar">
+        <a href="#" class="nav-logo">✨ Kawaii Web</a>
+        <ul class="nav-links">
+            <li><a href="#">หน้าแรก</a></li>
+            <li><a href="#">ผลิตภัณฑ์</a></li>
+            <li><a href="#">บริการ</a></li>
+            <li><a href="#">ติดต่อ</a></li>
+        </ul>
+        <div class="burger">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+        </div>
+    </nav>
+
     <div class="container">
-        <div class="icon">✨</div>
-        <h1>✨ ยินดีต้อนรับสู่โลกมินิมอล ✨</h1>
-        <p>หน้าเว็บที่น่ารักและเรียบง่ายนี้ออกแบบด้วยความโค้งมนและสีม่วงพาสเทลเพื่อความสบายตาของคุณ</p>
-        <a href="#" class="button">เริ่มสำรวจเลย!</a>
+        <h1>Welcome! 💖</h1>
+        <p>นี่คือเนื้อหาหลักของเว็บไซต์ โค้งมน มินิมอล และใช้สีม่วงพาสเทล ดูอ่อนโยนใช่ไหมล่ะ?</p>
+        <p>ลองเลื่อนหน้าจอลงเพื่อดูเอฟเฟกต์การเปลี่ยนสีของ Navbar!</p>
     </div>
 
-    <a href="#" class="footer-link">เกี่ยวกับเรา</a>
+    <div style="height: 1000px;"></div>
 
+    <script>
+        // 1. เมนูแฮมเบอร์เกอร์สำหรับมือถือ (Toggle Menu)
+        const navSlide = () => {
+            const burger = document.querySelector('.burger');
+            const nav = document.querySelector('.nav-links');
+            const navLinks = document.querySelectorAll('.nav-links li');
+
+            burger.addEventListener('click', () => {
+                // เปิด/ปิดเมนู
+                nav.classList.toggle('nav-active');
+                
+                // แอนิเมชันปุ่มแฮมเบอร์เกอร์
+                burger.classList.toggle('toggle');
+            });
+            
+            // ปิดเมนูเมื่อคลิกที่ลิงก์ (สำหรับมือถือ)
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    nav.classList.remove('nav-active');
+                    burger.classList.remove('toggle');
+                });
+            });
+        }
+
+        // 2. เอฟเฟกต์เปลี่ยนสี Navbar เมื่อเลื่อนหน้าจอ (Scroll Effect)
+        const scrollEffect = () => {
+            const navbar = document.getElementById('main-navbar');
+            const lightColor = '#e1bee7'; // ม่วงอ่อน
+            const darkColor = '#6a1b9a';  // ม่วงเข้ม
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    // เปลี่ยนเป็นม่วงอ่อนและข้อความเป็นม่วงเข้ม
+                    navbar.style.backgroundColor = lightColor;
+                    navbar.style.boxShadow = '0 4px 15px rgba(106, 27, 154, 0.3)';
+                    navbar.querySelectorAll('a').forEach(a => {
+                        a.style.color = darkColor;
+                    });
+                    navbar.querySelector('.burger').querySelectorAll('div').forEach(line => {
+                         line.style.backgroundColor = darkColor;
+                    });
+                } else {
+                    // กลับเป็นสีเดิม (ม่วงเข้ม)
+                    navbar.style.backgroundColor = darkColor;
+                    navbar.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.1)';
+                    navbar.querySelectorAll('a').forEach(a => {
+                        a.style.color = 'white';
+                    });
+                    navbar.querySelector('.burger').querySelectorAll('div').forEach(line => {
+                         line.style.backgroundColor = 'white';
+                    });
+                }
+            });
+        }
+
+        // เรียกใช้ฟังก์ชันทั้งหมดเมื่อหน้าเว็บโหลดเสร็จ
+        document.addEventListener('DOMContentLoaded', () => {
+            navSlide();
+            scrollEffect();
+        });
+    </script>
 </body>
 </html>
