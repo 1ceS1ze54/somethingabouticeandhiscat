@@ -1,741 +1,115 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>Cat Gallery Forum 🐾</title>
-  <style>
-    :root {
-      --bg: #f6f7fb;
-      --navbar: #fff;
-      --card: #fff;
-      --text: #222;
-      --shadow: 0 4px 24px rgba(0,0,0,0.07);
-      --accent: #222;
-      --radius: 2rem;
-      --radius-sm: 1.1rem;
-      --primary: #111;
-      --nav-active: #e8e8ee;
-      --button-bg: #1a1a1a;
-      --button-hover: #353535;
-      --button-text: #fff;
-      --modal-bg: rgba(0,0,0,0.16);
-    }
-    body {
-      min-height: 100vh;
-      margin: 0;
-      background: var(--bg);
-      font-family: 'Segoe UI', 'Noto Sans Thai', Arial, sans-serif;
-      color: var(--text);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      overflow-x: hidden;
-    }
-    .navbar {
-      width: 100vw;
-      background: var(--navbar);
-      box-shadow: var(--shadow);
-      border-radius: 0 0 var(--radius) var(--radius);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: .45rem 0 .35rem 0;
-      gap: 1.2rem;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      margin-bottom: 2.2rem;
-      backdrop-filter: blur(6px);
-      transition: box-shadow 0.2s;
-    }
-    .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 0.45em;
-      font-size: 1.08rem;
-      padding: 0.6em 1.1em;
-      border-radius: var(--radius-sm);
-      background: none;
-      color: var(--primary);
-      border: none;
-      cursor: pointer;
-      outline: none;
-      font-weight: 500;
-      transition: background 0.18s, color 0.18s, scale 0.18s;
-      opacity: 0.93;
-    }
-    .nav-item.active, .nav-item:hover {
-      background: var(--nav-active);
-      color: var(--accent);
-      scale: 1.06;
-    }
-    .container {
-      width: 100%;
-      max-width: 1000px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2.5rem;
-      margin-bottom: 3rem;
-      z-index: 1;
-    }
-    .gallery-forum {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      gap: 2.4rem;
-    }
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(285px, 1fr));
-      gap: 2.3rem;
-      width: 100%;
-      margin: 0 auto;
-      padding: 0 2vw;
-    }
-    .cat-card {
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 1.1rem 1rem 1.3rem 1rem;
-      transition: box-shadow 0.25s, transform 0.22s;
-      position: relative;
-      overflow: hidden;
-    }
-    .cat-card:hover {
-      box-shadow: 0 8px 32px rgba(0,0,0,.09);
-      transform: translateY(-6px) scale(1.022);
-    }
-    .cat-img {
-      width: 150px;
-      height: 150px;
-      object-fit: cover;
-      border-radius: 50%;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.12);
-      background: #eee;
-      margin-bottom: 1.05rem;
-      transition: transform 0.23s;
-    }
-    .cat-card:hover .cat-img {
-      transform: scale(1.07) rotate(-3deg);
-    }
-    .cat-name {
-      font-size: 1.12rem;
-      font-weight: 600;
-      margin-bottom: 0.4rem;
-      color: var(--primary);
-      letter-spacing: 0.04em;
-    }
-    .cat-desc {
-      font-size: 0.97rem;
-      color: #444;
-      opacity: .89;
-      margin-bottom: 0;
-      text-align: center;
-      min-height: 2.8em;
-    }
-    .post-btn {
-      background: var(--button-bg);
-      color: var(--button-text);
-      border: none;
-      border-radius: 999px;
-      font-size: 1.13rem;
-      font-weight: 600;
-      padding: 0.75em 2.2em;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
-      cursor: pointer;
-      outline: none;
-      transition: background 0.22s, transform 0.17s;
-      margin-bottom: 0.7rem;
-      margin-left: auto;
-      margin-right: 2vw;
-      display: flex;
-      align-items: center;
-      gap: 0.7em;
-    }
-    .post-btn:hover {
-      background: var(--button-hover);
-      transform: scale(1.045) translateY(-2px);
-    }
-    .action-bar {
-      display: flex;
-      gap: 1.5em;
-      align-items: center;
-      margin: 1.2em 0 0.2em 0;
-    }
-    .like-btn, .comment-btn {
-      display: flex;
-      align-items: center;
-      border: none;
-      background: none;
-      font-size: 1.13rem;
-      cursor: pointer;
-      transition: color 0.18s, transform 0.15s;
-      color: #888;
-      padding: 0.35em 0.8em;
-      border-radius: 999px;
-      gap: 0.4em;
-      font-weight: 500;
-    }
-    .like-btn.liked { color: #d42655; }
-    .like-btn:hover, .comment-btn:hover { color: #222; transform: scale(1.09); background: #f6f6f8; }
-    .like-count, .comment-count {
-      font-size: 1.02rem;
-      margin-left: 0.18em;
-    }
-    .comments-section {
-      width: 100%;
-      margin-top: 1em;
-      padding-top: 0.5em;
-      border-top: 1px solid #f0f0f0;
-      background: #fafbfc;
-      border-radius: 1em;
-    }
-    .comment-item {
-      margin: 0.7em 0 0.5em 0;
-      padding: 0.65em 0.95em 0.5em 0.95em;
-      background: #fff;
-      border-radius: 1em;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.03);
-      font-size: 0.99rem;
-      word-break: break-word;
-      position: relative;
-    }
-    .comment-user {
-      font-weight: 600;
-      margin-bottom: 0.05em;
-      color: #111;
-      font-size: 1em;
-      display: inline-block;
-    }
-    .comment-content {
-      font-size: 0.97em;
-      margin-bottom: 0.2em;
-    }
-    .reply-btn {
-      font-size: 0.93em;
-      color: #888;
-      background: none;
-      border: none;
-      cursor: pointer;
-      margin-left: 0.3em;
-      transition: color 0.16s;
-      border-radius: 0.5em;
-      padding: 0.12em 0.7em;
-    }
-    .reply-btn:hover { color: #222; background: #f3f3f6; }
-    .reply-section {
-      margin-left: 1.7em;
-      margin-top: 0.3em;
-    }
-    .reply-form {
-      display: flex;
-      align-items: flex-end;
-      gap: 0.5em;
-      margin-top: 0.5em;
-    }
-    .reply-form textarea, .comment-form textarea {
-      font-size: 1em;
-      padding: 0.4em 0.9em;
-      border-radius: 999px;
-      border: 1.5px solid #eee;
-      background: #fafbfe;
-      resize: none;
-      width: 220px;
-      outline: none;
-      transition: border 0.18s, background 0.18s;
-    }
-    .reply-form textarea:focus, .comment-form textarea:focus {
-      border: 1.5px solid #222;
-      background: #fff;
-    }
-    .reply-form button, .comment-form button {
-      background: var(--button-bg);
-      color: var(--button-text);
-      border: none;
-      border-radius: 999px;
-      font-size: 1em;
-      padding: 0.42em 1.5em;
-      cursor: pointer;
-      transition: background 0.18s, transform 0.13s;
-      font-weight: 600;
-    }
-    .reply-form button:hover, .comment-form button:hover {
-      background: var(--button-hover);
-      transform: scale(1.04);
-    }
-    .comment-form {
-      display: flex;
-      align-items: flex-end;
-      gap: 0.6em;
-      margin: 1em 0 0 0;
-    }
-    /* Modal */
-    .modal-bg {
-      display: none;
-      position: fixed;
-      left: 0; top: 0; width: 100vw; height: 100vh;
-      background: var(--modal-bg);
-      z-index: 100;
-      justify-content: center;
-      align-items: center;
-      animation: fadein 0.2s;
-    }
-    .modal-bg.show { display: flex; }
-    @keyframes fadein {
-      from { opacity: 0; }
-      to   { opacity: 1; }
-    }
-    .modal {
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 2.1rem 1.7rem 1.7rem 1.7rem;
-      min-width: 320px;
-      max-width: 90vw;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      gap: 1.3rem;
-    }
-    .modal h2 {
-      margin: 0 0 0.2em 0;
-      font-weight: 700;
-      font-size: 1.35rem;
-      text-align: center;
-    }
-    .close-btn {
-      position: absolute;
-      top: 1.1rem; right: 1.2rem;
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      color: #888;
-      cursor: pointer;
-      border-radius: 50%;
-      padding: 0.1em 0.4em;
-      transition: background 0.15s;
-    }
-    .close-btn:hover { background: #eee; }
-    .modal form {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      width: 100%;
-      align-items: center;
-    }
-    .modal input, .modal textarea {
-      border: 1.5px solid #eee;
-      background: #fafbfe;
-      border-radius: 1.1em;
-      font-size: 1.08rem;
-      padding: 0.7em 1em;
-      width: 245px;
-      resize: none;
-      outline: none;
-      transition: border 0.18s, background 0.18s;
-    }
-    .modal input:focus, .modal textarea:focus {
-      border: 1.5px solid #222;
-      background: #fff;
-    }
-    .modal label {
-      font-size: 0.99rem;
-      color: #222;
-      align-self: flex-start;
-      margin-bottom: -0.5em;
-      margin-left: 0.1em;
-      font-weight: 500;
-    }
-    .modal .submit-btn {
-      background: var(--button-bg);
-      color: var(--button-text);
-      border: none;
-      border-radius: 999px;
-      font-size: 1.08rem;
-      font-weight: 600;
-      padding: 0.7em 2.1em;
-      cursor: pointer;
-      transition: background 0.18s, transform 0.17s;
-      margin-top: 0.5rem;
-    }
-    .modal .submit-btn:hover {
-      background: var(--button-hover);
-      transform: scale(1.04);
-    }
-    .preview-img {
-      display: block;
-      margin: 0 auto 0.7em auto;
-      width: 100px; height: 100px;
-      object-fit: cover;
-      border-radius: 50%;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.12);
-      background: #eee;
-    }
-    .bubbles {
-      pointer-events: none;
-      position: fixed;
-      z-index: 0;
-      left: 0; top: 0; width: 100vw; height: 100vh;
-      overflow: hidden;
-    }
-    .bubble {
-      position: absolute;
-      border-radius: 50%;
-      background: #222;
-      opacity: 0.07;
-      animation: rise 8s linear infinite;
-    }
-    @keyframes rise {
-      0% { transform: translateY(100vh) scale(0.6);}
-      100% { transform: translateY(-20vh) scale(1.15);}
-    }
-    @media (max-width: 600px) {
-      .navbar { border-radius: 0 0 1.2rem 1.2rem; }
-      .container { padding: 0 2vw; }
-      .gallery { padding: 0 0.5vw;}
-      .modal { padding: 1.2rem 0.7rem 1rem 0.7rem; }
-      .modal input, .modal textarea { width: 95vw; max-width: 99vw; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello, Minimalist! 🌸</title>
+    <style>
+        /* ตัวแปรสี */
+        :root {
+            --primary-color: #6a1b9a; /* ม่วงเข้ม */
+            --light-color: #e1bee7; /* ม่วงอ่อนพาสเทล */
+            --background-color: #ffffff; /* สีขาว */
+            --text-color: #333333; /* สีเทาเข้มสำหรับข้อความ */
+        }
+
+        /* การตั้งค่าพื้นฐาน */
+        body {
+            font-family: 'Arial', sans-serif; /* ฟอนต์เรียบง่าย */
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            flex-direction: column;
+        }
+
+        /* องค์ประกอบหลัก: เน้นความกลมมน */
+        .container {
+            background-color: var(--light-color); /* ใช้ม่วงอ่อนเป็นพื้นหลัง */
+            padding: 40px 60px;
+            border-radius: 50px; /* ทำให้โค้งมนมาก ๆ */
+            box-shadow: 0 10px 30px rgba(106, 27, 154, 0.2); /* เงาอ่อน ๆ สีม่วง */
+            max-width: 400px;
+            width: 90%;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .container:hover {
+            transform: scale(1.02); /* เอฟเฟกต์เล็กน้อยเมื่อวางเมาส์ */
+        }
+
+        /* หัวข้อ */
+        h1 {
+            color: var(--primary-color);
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.1em;
+            color: var(--primary-color);
+            opacity: 0.8;
+            margin-bottom: 30px;
+        }
+
+        /* ปุ่ม: รูปร่าง Pill-shaped */
+        .button {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--background-color);
+            padding: 12px 30px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 30px; /* ทำให้กลมเหมือนแคปซูล/เม็ดยา */
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 4px 10px rgba(106, 27, 154, 0.4);
+        }
+
+        .button:hover {
+            background-color: #9c27b0; /* ม่วงสว่างขึ้นเมื่อโฮเวอร์ */
+            transform: translateY(-2px);
+        }
+
+        /* ลิงก์ด้านล่าง */
+        .footer-link {
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: var(--primary-color);
+            text-decoration: none;
+            padding: 8px 15px;
+            border: 2px solid var(--light-color);
+            border-radius: 20px; /* โค้งมน */
+            transition: background-color 0.3s;
+        }
+
+        .footer-link:hover {
+            background-color: var(--light-color);
+        }
+
+        /* ไอคอน (สมมติว่าใช้ตัวอักษรหรืออิโมจิ) */
+        .icon {
+            font-size: 3em;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            line-height: 1; /* จัดบรรทัดให้ชิด */
+        }
+    </style>
 </head>
 <body>
-  <div class="bubbles" id="bubbles"></div>
-  <nav class="navbar">
-    <button class="nav-item active" data-page="gallery">🖼️ ฟอรั่มแมว</button>
-    <button class="nav-item" data-page="about">😺 เกี่ยวกับแมว</button>
-    <button class="nav-item" data-page="contact">📬 ติดต่อ</button>
-  </nav>
-  <div class="container" id="content">
-    <!-- Gallery Forum Page (default) -->
-    <div id="gallery-page">
-      <div style="display:flex;justify-content:space-between;align-items:center;width:100%;">
-        <h1 style="font-weight:600;letter-spacing:.02em;margin-bottom:2.2rem;">
-          ฟอรั่มโพสต์รูปแมว 🐈‍⬛
-        </h1>
-        <button class="post-btn" id="open-modal"><span>➕ โพสรูปแมว</span></button>
-      </div>
-      <div class="gallery-forum">
-        <div class="gallery" id="cat-gallery">
-          <!-- Cat posts will appear here -->
-        </div>
-      </div>
+
+    <div class="container">
+        <div class="icon">✨</div>
+        <h1>✨ ยินดีต้อนรับสู่โลกมินิมอล ✨</h1>
+        <p>หน้าเว็บที่น่ารักและเรียบง่ายนี้ออกแบบด้วยความโค้งมนและสีม่วงพาสเทลเพื่อความสบายตาของคุณ</p>
+        <a href="#" class="button">เริ่มสำรวจเลย!</a>
     </div>
-    <!-- About Page -->
-    <div id="about-page" style="display:none;">
-      <h1 style="text-align:center;font-weight:600;margin-bottom:1.7rem;">😺 เกี่ยวกับแมว</h1>
-      <p style="text-align:center;font-size:1.09rem;padding:0 1rem 1rem 1rem;">
-        แมวเป็นสัตว์เลี้ยงยอดนิยม ด้วยความน่ารัก ขี้เล่น และเป็นเพื่อนที่ดีในบ้าน<br>
-        พวกเขามีเอกลักษณ์เฉพาะตัว ทั้งนิสัย พฤติกรรม และเสียงร้องที่ไม่เหมือนใคร<br>
-        <br>
-        แมวทุกตัวในฟอรั่มนี้ล้วนแต่มอบรอยยิ้มและความสุขให้เจ้าของเสมอ 🐾
-      </p>
-    </div>
-    <!-- Contact Page -->
-    <div id="contact-page" style="display:none;">
-      <h1 style="text-align:center;font-weight:600;margin-bottom:1.7rem;">📬 ติดต่อ</h1>
-      <p style="text-align:center;font-size:1.09rem;">
-        สนใจพูดคุยหรือแบ่งปันรูปแมวของคุณ?<br>
-        ทิ้งข้อความไว้ที่ <a href="mailto:somethingabouticeandhiscat@gmail.com" style="color:#222;text-decoration:underline;">อีเมลนี้</a> ได้เลย!
-      </p>
-    </div>
-  </div>
-  <!-- Modal for new cat post -->
-  <div class="modal-bg" id="modal-bg">
-    <div class="modal">
-      <button class="close-btn" id="close-modal" title="ปิด">&times;</button>
-      <h2>โพสรูปแมวของคุณ</h2>
-      <form id="cat-form">
-        <label for="cat-img">เลือกรูปแมว</label>
-        <input type="file" id="cat-img" accept="image/*" required>
-        <img id="img-preview" class="preview-img" style="display:none;">
-        <label for="cat-name">ชื่อแมว</label>
-        <input type="text" id="cat-name" maxlength="32" placeholder="ชื่อแมวของคุณ" required>
-        <label for="cat-desc">คำอธิบาย</label>
-        <textarea id="cat-desc" maxlength="80" rows="2" placeholder="เล่าเรื่องราวความน่ารัก"></textarea>
-        <button type="submit" class="submit-btn">โพสต์เลย!</button>
-      </form>
-    </div>
-  </div>
-  <script>
-    // Floating black bubbles (background animation)
-    function random(min, max) { return Math.random() * (max - min) + min; }
-    const bubbles = document.getElementById('bubbles');
-    for (let i = 0; i < 16; i++) {
-      const b = document.createElement('div');
-      b.className = 'bubble';
-      b.style.width = b.style.height = random(40,80) + 'px';
-      b.style.left = random(0, 100) + 'vw';
-      b.style.animationDelay = random(0,8) + 's';
-      bubbles.appendChild(b);
-    }
 
-    // Navbar SPA logic
-    const navButtons = document.querySelectorAll('.nav-item');
-    const pages = {
-      gallery: document.getElementById('gallery-page'),
-      about: document.getElementById('about-page'),
-      contact: document.getElementById('contact-page')
-    };
-    navButtons.forEach(btn => {
-      btn.onclick = () => {
-        navButtons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        Object.keys(pages).forEach(k => pages[k].style.display = 'none');
-        pages[btn.dataset.page].style.display = '';
-      };
-    });
+    <a href="#" class="footer-link">เกี่ยวกับเรา</a>
 
-    // Forum logic: Modal show/hide
-    const modalBg = document.getElementById('modal-bg');
-    document.getElementById('open-modal').onclick = () => {
-      modalBg.classList.add('show');
-      document.body.style.overflow = 'hidden';
-    }
-    document.getElementById('close-modal').onclick = () => {
-      modalBg.classList.remove('show');
-      document.body.style.overflow = '';
-      document.getElementById('cat-form').reset();
-      document.getElementById('img-preview').style.display = 'none';
-    }
-    modalBg.onclick = e => {
-      if (e.target === modalBg) {
-        modalBg.classList.remove('show');
-        document.body.style.overflow = '';
-        document.getElementById('cat-form').reset();
-        document.getElementById('img-preview').style.display = 'none';
-      }
-    };
-
-    // Preview image logic
-    const imgInput = document.getElementById('cat-img');
-    const imgPreview = document.getElementById('img-preview');
-    imgInput.onchange = function() {
-      if (this.files && this.files[0]) {
-        const reader = new FileReader();
-        reader.onload = e => {
-          imgPreview.src = e.target.result;
-          imgPreview.style.display = 'block';
-        };
-        reader.readAsDataURL(this.files[0]);
-      } else {
-        imgPreview.style.display = 'none';
-      }
-    };
-
-    // Forum logic: store and show posts
-    const gallery = document.getElementById('cat-gallery');
-    // Default posts
-    const defaultCats = [
-      {
-        img: "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=400&q=80",
-        name: "โมจิ",
-        desc: "แมวขาวดำสุดเฟี้ยว ชอบเล่นซ่อนแอบและนอนบนคีย์บอร์ด",
-        likes: 2,
-        comments: [
-          { user: "Guest", content: "น่ารักมากเลย!" }
-        ]
-      },
-      {
-        img: "https://images.unsplash.com/photo-1518715308788-3005759c61e9?auto=format&fit=crop&w=400&q=80",
-        name: "โทฟู",
-        desc: "ส้มสายโซเชียล ใครชอบถ่ายเซลฟี่ต้องถูกใจแน่นอน",
-        likes: 1,
-        comments: []
-      },
-      {
-        img: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
-        name: "คาราเมล",
-        desc: "ขี้อ้อนและขนฟูที่สุดในบ้าน ชอบกลิ้งบนพรม",
-        likes: 0,
-        comments: []
-      },
-      {
-        img: "https://images.unsplash.com/photo-1518715308788-3005759c61e9?auto=format&fit=crop&w=400&q=80",
-        name: "ยูนิ",
-        desc: "ขาวจั๊วะตาใสเหมือนยูนิคอร์น ชอบนั่งข้างหน้าต่าง",
-        likes: 0,
-        comments: []
-      }
-    ];
-
-    // Load posts from localStorage or use default
-    function loadCats() {
-      let cats = [];
-      try {
-        cats = JSON.parse(localStorage.getItem('cat-posts-v3')) || defaultCats;
-      } catch { cats = defaultCats; }
-      return cats;
-    }
-    function saveCats(cats) {
-      localStorage.setItem('cat-posts-v3', JSON.stringify(cats));
-    }
-
-    // --- UI for Comments/Replies ---
-    function renderComments(comments = [], parentIndex = '', parentArr = comments) {
-      let html = "";
-      comments.forEach((c, i) => {
-        const cidx = parentIndex === '' ? i+'' : parentIndex + '-' + i;
-        html += `
-          <div class="comment-item" data-comment="${cidx}">
-            <span class="comment-user">${c.user || "Guest"}</span>:
-            <span class="comment-content">${c.content}</span>
-            <button class="reply-btn" data-reply="${cidx}">ตอบกลับ</button>
-            <div class="reply-section">
-              ${c.replies ? renderComments(c.replies, cidx, c.replies) : ""}
-            </div>
-            <div class="reply-form" style="display:none;" data-form="${cidx}">
-              <textarea placeholder="เขียนตอบกลับ..." rows="1"></textarea>
-              <button>โพสต์</button>
-            </div>
-          </div>
-        `;
-      });
-      return html;
-    }
-
-    // --- Render all posts ---
-    function renderCats() {
-      const cats = loadCats();
-      gallery.innerHTML = '';
-      cats.slice().reverse().forEach((cat, idx) => {
-        const realIdx = cats.length - 1 - idx; // for reverse order
-        const liked = (cat.likedByMe ? "liked" : "");
-        const likes = cat.likes || 0;
-        const comments = cat.comments || [];
-        const card = document.createElement('div');
-        card.className = 'cat-card';
-        card.innerHTML = `
-          <img class="cat-img" src="${cat.img}" alt="${cat.name}">
-          <div class="cat-name">${cat.name}</div>
-          <div class="cat-desc">${cat.desc || ''}</div>
-          <div class="action-bar">
-            <button class="like-btn ${liked}" data-like="${realIdx}">❤️ <span class="like-count">${likes}</span></button>
-            <button class="comment-btn" data-comment="${realIdx}">💬 <span class="comment-count">${comments.length}</span></button>
-          </div>
-          <div class="comments-section" style="display:none;" data-section="${realIdx}">
-            <div class="comment-list">
-              ${renderComments(comments)}
-            </div>
-            <form class="comment-form" data-form="${realIdx}">
-              <textarea placeholder="แสดงความคิดเห็น..." rows="1" required></textarea>
-              <button type="submit">โพสต์</button>
-            </form>
-          </div>
-        `;
-        gallery.appendChild(card);
-      });
-
-      // Like button logic
-      document.querySelectorAll('.like-btn').forEach(btn => {
-        btn.onclick = function() {
-          const idx = +btn.getAttribute('data-like');
-          const cats = loadCats();
-          if (!cats[idx].likes) cats[idx].likes = 0;
-          cats[idx].likedByMe = !cats[idx].likedByMe;
-          cats[idx].likes += cats[idx].likedByMe ? 1 : -1;
-          saveCats(cats);
-          renderCats();
-        };
-      });
-
-      // Comment section show/hide
-      document.querySelectorAll('.comment-btn').forEach(btn => {
-        btn.onclick = function() {
-          const idx = btn.getAttribute('data-comment');
-          const section = document.querySelector(`.comments-section[data-section="${idx}"]`);
-          if (section) section.style.display = (section.style.display === 'none' ? '' : 'none');
-        };
-      });
-
-      // Add comment
-      document.querySelectorAll('.comment-form').forEach(form => {
-        form.onsubmit = function(e) {
-          e.preventDefault();
-          const idx = form.getAttribute('data-form');
-          const textarea = form.querySelector('textarea');
-          const value = textarea.value.trim();
-          if (!value) return;
-          const cats = loadCats();
-          cats[idx].comments = cats[idx].comments || [];
-          cats[idx].comments.push({ user: "Guest", content: value, replies: [] });
-          saveCats(cats);
-          textarea.value = '';
-          renderCats();
-          // Open the comment section again:
-          const section = document.querySelector(`.comments-section[data-section="${idx}"]`);
-          if (section) section.style.display = '';
-        };
-      });
-
-      // Reply button show/hide
-      document.querySelectorAll('.reply-btn').forEach(btn => {
-        btn.onclick = function() {
-          const cidx = btn.getAttribute('data-reply');
-          const replyForm = document.querySelector(`.reply-form[data-form="${cidx}"]`);
-          if (replyForm) replyForm.style.display = (replyForm.style.display === 'none' ? '' : 'none');
-        };
-      });
-
-      // Reply form submit
-      document.querySelectorAll('.reply-form').forEach(form => {
-        const btn = form.querySelector('button');
-        btn.onclick = function() {
-          const textarea = form.querySelector('textarea');
-          const value = textarea.value.trim();
-          if (!value) return;
-          const cidx = form.getAttribute('data-form');
-          const cats = loadCats();
-          // cidx is e.g. "3-1-0"
-          const [catIdx, ...replyPath] = cidx.split('-').map(Number);
-          let comments = cats[catIdx].comments;
-          let commentObj;
-          for (let i = 0; i < replyPath.length; i++) {
-            commentObj = comments[replyPath[i]];
-            if (!commentObj.replies) commentObj.replies = [];
-            if (i === replyPath.length - 1) {
-              commentObj.replies.push({ user: "Guest", content: value, replies: [] });
-            } else {
-              comments = commentObj.replies;
-            }
-          }
-          saveCats(cats);
-          textarea.value = '';
-          renderCats();
-          // Open the comment section again:
-          const section = document.querySelector(`.comments-section[data-section="${catIdx}"]`);
-          if (section) section.style.display = '';
-        };
-      });
-    }
-    renderCats();
-
-    // Handle post new cat
-    document.getElementById('cat-form').onsubmit = function(e) {
-      e.preventDefault();
-      const file = imgInput.files[0];
-      const name = document.getElementById('cat-name').value.trim() || "แมวไม่ระบุชื่อ";
-      const desc = document.getElementById('cat-desc').value.trim();
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        const img = evt.target.result;
-        const cats = loadCats();
-        cats.push({ img, name, desc, likes: 0, comments: [] });
-        saveCats(cats);
-        renderCats();
-        modalBg.classList.remove('show');
-        document.body.style.overflow = '';
-        document.getElementById('cat-form').reset();
-        imgPreview.style.display = 'none';
-      }
-      reader.readAsDataURL(file);
-    };
-  </script>
 </body>
 </html>
