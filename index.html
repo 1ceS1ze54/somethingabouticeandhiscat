@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สุดโหด! Interactive Web</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS จัดเต็มจะอยู่ในส่วนนี้ (ตามปกติควรแยกไฟล์ style.css) */
+        :root {
+            --primary-color: #ff4d4d;
+            --secondary-color: #00bcd4;
+            --bg-dark: #1e1e2f;
+            --text-light: #f0f0f5;
+            --card-hover-scale: 1.05;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Kanit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        /* ------------------ Navigation ------------------ */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background: rgba(30, 30, 47, 0.9);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px); /* ลูกเล่นใสๆ */
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            margin-left: 25px;
+            font-size: 1.1rem;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary-color);
+            transform: translateY(-3px);
+        }
+
+        /* ------------------ Hero Section (3D Effect) ------------------ */
+        .hero {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #1e1e2f 0%, #0a0a14 100%);
+            perspective: 1000px; /* สำหรับเอฟเฟกต์ 3D */
+            overflow: hidden;
+        }
+
+        .hero-content {
+            transform: rotateY(0deg) scale(1);
+            transition: transform 1.5s ease-out;
+            padding: 2rem;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            animation: text-pop 1s ease-out;
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+            animation: text-fade 1.5s ease-out 0.5s forwards;
+            opacity: 0;
+        }
+
+        /* Keyframes Animations */
+        @keyframes text-pop {
+            0% { transform: scale(0.5); opacity: 0; }
+            80% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes text-fade {
+            to { opacity: 1; }
+        }
+
+        /* ------------------ Card Grid (CSS Grid & Hover Effect) ------------------ */
+        .section {
+            padding: 5rem 5%;
+            min-height: 50vh;
+        }
+
+        .section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--secondary-color);
+            display: inline-block;
+            padding-bottom: 5px;
+            width: auto;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            /* เพิ่ม Perspective ให้ Grid Container เพื่อให้เอฟเฟกต์ 3D ดูสมจริง */
+            perspective: 1000px;
+        }
+
+        .card {
+            background-color: #2a2a3a;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            transition: transform 0.6s ease, box-shadow 0.6s ease;
+            cursor: pointer;
+            border-left: 5px solid var(--primary-color);
+            transform-style: preserve-3d; /* ทำให้ลูกเล่น 3D ทำงาน */
+
+            /* สำหรับ Scroll Reveal */
+            opacity: 0;
+            transform: translateY(50px) scale(0.9);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        .card:hover {
+            /* เอฟเฟกต์ 3D Hover Effect */
+            transform: rotateX(5deg) rotateY(-5deg) translateZ(20px) scale(var(--card-hover-scale));
+            box-shadow: 0 25px 50px rgba(255, 77, 77, 0.3);
+        }
+
+        .card h3 {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        /* ------------------ Scroll Reveal Classes (JS Control) ------------------ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card.active {
+             opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* ------------------ Footer ------------------ */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: #1a1a25;
+            color: #888;
+            font-size: 0.9rem;
+            border-top: 1px solid #333;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">💥 POWER WEB</div>
+        <nav class="nav-links">
+            <a href="#hero">หน้าแรก</a>
+            <a href="#features">คุณสมบัติ</a>
+            <a href="#about">เกี่ยวกับ</a>
+        </nav>
+    </header>
+
+    <section id="hero" class="hero">
+        <div class="hero-content">
+            <h1>ลูกเล่นเว็บสุดโหด!</h1>
+            <p>สัมผัสประสบการณ์การใช้งานเว็บแบบใหม่ที่เต็มไปด้วยความเคลื่อนไหว</p>
+        </div>
+    </section>
+
+    <section id="features" class="section">
+        <h2 class="reveal">🔥 คุณสมบัติหลัก</h2>
+        <div class="card-grid">
+            <div class="card" data-tilt>
+                <h3>CSS 3D Transform</h3>
+                <p>สร้างเอฟเฟกต์การ์ดที่หมุนและเด้งเมื่อนำเมาส์ไปวาง แสดงความลึกและมิติ</p>
+            </div>
+            <div class="card" data-tilt>
+                <h3>Intersection Observer</h3>
+                <p>ใช้ JavaScript ในการตรวจจับการเลื่อน เพื่อเปิดเผย (Reveal) เนื้อหาอย่างสวยงาม</p>
+            </div>
+            <div class="card" data-tilt>
+                <h3>CSS Grid & Flexbox</h3>
+                <p>การจัดวางที่ยืดหยุ่นและตอบสนองต่อทุกขนาดหน้าจอ (Responsive Layout)</p>
+            </div>
+            <div class="card" data-tilt>
+                <h3>Custom Properties (Variables)</h3>
+                <p>จัดการสีและค่าต่างๆ ได้ง่าย ทำให้การปรับแต่งธีมทำได้รวดเร็ว</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <h2 class="reveal">💡 ข้อมูลเพิ่มเติม</h2>
+        <p class="reveal">นี่คือส่วนเพิ่มเติมเพื่อทำให้หน้าเว็บมีความยาวมากขึ้น และทดสอบการทำงานของ Scroll Reveal ได้อย่างมีประสิทธิภาพ</p>
+        <div class="card-grid" style="margin-top: 2rem;">
+            <div class="card" data-tilt>
+                <h3>สุดยอดโครงสร้าง</h3>
+                <p>โค้ดที่สะอาดและเป็นระเบียบตามมาตรฐาน HTML5</p>
+            </div>
+            <div class="card" data-tilt>
+                <h3>ความเร็วสูง</h3>
+                <p>การใช้ CSS Transition แทน JS Animation เพื่อประสิทธิภาพที่ดีที่สุด</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        © 2025 Power Web Demo. สงวนลิขสิทธิ์
+    </footer>
+
+    <script>
+        // ตามปกติควรแยกไฟล์ script.js
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // 1. Hero 3D Effect on Load
+            const heroContent = document.querySelector('.hero-content');
+            // เริ่มต้นด้วยการหมุน 10 องศา แล้วให้ CSS Transition กลับมาที่ 0
+            heroContent.style.transform = 'rotateY(10deg) scale(0.8)';
+            setTimeout(() => {
+                 heroContent.style.transform = 'rotateY(0deg) scale(1)';
+            }, 100);
+
+
+            // 2. Intersection Observer (Scroll Reveal สุดโหด)
+            const elementsToReveal = document.querySelectorAll('.reveal, .card');
+
+            const observerOptions = {
+                root: null, // สังเกตการณ์เมื่อเทียบกับ viewport
+                rootMargin: '0px',
+                threshold: 0.1 // เมื่อมองเห็น 10% ของ element
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // เมื่อ element เข้ามาใน viewport
+                        entry.target.classList.add('active');
+                        // เลิกสังเกตเมื่อเปิดเผยแล้ว เพื่อประสิทธิภาพ
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            elementsToReveal.forEach(el => {
+                observer.observe(el);
+            });
+
+
+            // 3. Simple Mouse Parallax on Hero Section (เพิ่มความโหด)
+            const hero = document.getElementById('hero');
+            if(hero) {
+                hero.addEventListener('mousemove', (e) => {
+                    const depth1 = 10; // ยิ่งค่าน้อยยิ่งเคลื่อนที่มาก
+                    const depth2 = 5;
+
+                    const moveX = (e.clientX / window.innerWidth - 0.5) * depth1;
+                    const moveY = (e.clientY / window.innerHeight - 0.5) * depth1;
+
+                    // ปรับ Perspective Origin ตามการเคลื่อนไหวของเมาส์
+                    heroContent.style.transform = `
+                        translate(0px, 0px)
+                        rotateX(${-moveY}deg)
+                        rotateY(${moveX}deg)
+                    `;
+                });
+                // รีเซ็ตเมื่อเมาส์ออกจาก Hero
+                 hero.addEventListener('mouseleave', () => {
+                    heroContent.style.transform = 'rotateX(0deg) rotateY(0deg)';
+                });
+            }
+
+
+            // 4. Card Tilt Effect (สมมติว่าใช้ library แต่ในตัวอย่างนี้ใช้ CSS/JS ล้วน)
+            // โค้ดที่สร้างเอฟเฟกต์ Tilt 3D จากการขยับเมาส์
+            document.querySelectorAll('.card[data-tilt]').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    // หาพิกัดเมาส์ภายใน Card
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left; // x position within the element
+                    const y = e.clientY - rect.top; // y position within the element
+
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+
+                    // คำนวณการหมุน (Rotate) โดยอิงจากระยะห่างจากจุดศูนย์กลาง
+                    const rotateX = ((centerY - y) / centerY) * 15; // หมุนแกน X สูงสุด 15 องศา
+                    const rotateY = ((x - centerX) / centerX) * 15; // หมุนแกน Y สูงสุด 15 องศา
+
+                    // ใช้ transform เพื่อให้เกิดเอฟเฟกต์ 3D
+                    card.style.transform = `
+                        perspective(1000px)
+                        rotateX(${rotateX}deg)
+                        rotateY(${rotateY}deg)
+                        scale(var(--card-hover-scale))
+                    `;
+
+                    // เพิ่ม Shadow Effect ตามทิศทางแสง
+                    const lightX = (x / rect.width) * 100;
+                    const lightY = (y / rect.height) * 100;
+
+                    card.style.boxShadow = `
+                        ${(x - centerX) / 10}px ${(y - centerY) / 10}px 30px rgba(0, 0, 0, 0.6),
+                        0 0 50px rgba(255, 77, 77, 0.2) inset
+                    `;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    // กลับสู่สภาพเดิมเมื่อเมาส์ออก
+                    card.style.transform = 'none';
+                    card.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.4)';
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>
