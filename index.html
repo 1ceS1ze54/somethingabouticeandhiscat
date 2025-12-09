@@ -1,264 +1,203 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minimal Purple Navbar ✨</title>
-    <style>
-        /* ตัวแปรสี */
-        :root {
-            --primary-color: #6a1b9a; /* ม่วงเข้ม */
-            --light-color: #e1bee7; /* ม่วงอ่อนพาสเทล */
-            --background-color: #ffffff; /* สีขาว */
-            --text-color: #333333; /* สีเทาเข้ม */
-            --nav-bg: #9c27b0; /* ม่วงสำหรับ Navbar */
-            --nav-text: #ffffff; /* สีขาวสำหรับข้อความใน Navbar */
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>แกคูลสุดละนะ &lt;3</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
 
-        /* การตั้งค่าพื้นฐาน */
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            margin: 0;
-            padding-top: 80px; /* เว้นที่ว่างสำหรับ Navbar */
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-            text-align: center;
-        }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Orbitron', sans-serif;
+      height: 100vh;
+      overflow-x: hidden;
+      background: #000;
+      color: #fff;
+      cursor: none;
+    }
 
-        /*
-         * --- NAVBAR สไตล์มินิมอล โค้งมน ---
-         */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: var(--nav-bg);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            padding: 10px 20px;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            /* เพิ่มความโค้งมนที่ขอบด้านล่างเท่านั้น */
-            border-bottom-left-radius: 30px;
-            border-bottom-right-radius: 30px;
-            transition: background-color 0.4s ease; /* เอฟเฟกต์เปลี่ยนสี */
-        }
+    /* Particle Background */
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0; left: 0;
+      z-index: 1;
+    }
 
-        .nav-logo {
-            color: var(--nav-text);
-            text-decoration: none;
-            font-size: 1.5em;
-            font-weight: bold;
-            letter-spacing: 1px;
-            padding: 5px 0;
-        }
+    /* Custom Cursor */
+    .cursor {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      border: 2px solid #0ff;
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      transition: all 0.1s ease;
+      z-index: 9999;
+      backdrop-filter: invert(1);
+      mix-blend-mode: difference;
+    }
+    .cursor-follow {
+      position: fixed;
+      width: 12px;
+      height: 12px;
+      background: #0ff;
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      box-shadow: 0 0 20px #0ff, 0 0 60px #0ff;
+    }
 
-        .nav-links {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-        }
+    /* Main Content */
+    .container {
+      position: relative;
+      z-index: 2;
+      height:  : 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 2rem;
+    }
 
-        .nav-links a {
-            color: var(--nav-text);
-            text-decoration: none;
-            padding: 8px 15px;
-            margin: 0 5px;
-            border-radius: 20px; /* ทำให้ลิงก์โค้งมน */
-            transition: background-color 0.3s, transform 0.2s;
-        }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 4rem 3rem;
+      max-width: 600px;
+      box-shadow: 0 8px 32px rgba(0, 255, 255, 0.2);
+      animation: float 6s ease-in-out infinite;
+    }
 
-        .nav-links a:hover {
-            background-color: var(--light-color); /* ม่วงอ่อนเมื่อโฮเวอร์ */
-            color: var(--primary-color);
-            transform: translateY(-2px); /* เอฟเฟกต์ยกขึ้น */
-        }
+    h1 {
+      font-size: 4.5rem;
+      background: linear-gradient(90deg, #0ff, #f0f, #ff0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 40px rgba(0, 255, 255, 0.5);
+    }
 
-        /*
-         * --- เมนูแฮมเบอร์เกอร์ (สำหรับมือถือ) ---
-         */
-        .burger {
-            display: none; /* ซ่อนไว้สำหรับเดสก์ท็อป */
-            cursor: pointer;
-            padding: 5px;
-        }
+    p {
+      font-size: 1.4rem;
+      margin: 1.5rem 0;
+      opacity: 0.9;
+      line-height: 1.6;
+    }
 
-        .burger div {
-            width: 25px;
-            height: 3px;
-            background-color: var(--nav-text);
-            margin: 5px;
-            border-radius: 2px;
-            transition: all 0.3s ease;
-        }
+    .btn {
+      margin-top: 2rem;
+      padding: 14px 40px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      background: transparent;
+      color: #0ff;
+      border: 2px solid #0ff;
+      border-radius: 50px;
+      cursor: none;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
 
-        /*
-         * --- เนื้อหาหลัก ---
-         */
-        .container {
-            background-color: var(--light-color);
-            padding: 40px 60px;
-            border-radius: 50px; /* โค้งมนมาก ๆ */
-            box-shadow: 0 10px 30px rgba(106, 27, 154, 0.2);
-            max-width: 500px;
-            width: 90%;
-            margin-top: 40px;
-        }
+    .btn:hover {
+      background: #0ff;
+      color: #000;
+      box-shadow: 0 0 30px #0ff;
+      transform: translateY(-5px);
+    }
 
-        h1 {
-            color: var(--primary-color);
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: 0.6s;
+    }
 
-        p {
-            font-size: 1.1em;
-            color: var(--primary-color);
-            opacity: 0.8;
-            margin-bottom: 30px;
-        }
+    .btn:hover::before {
+      left: 100%;
+    }
 
-        /*
-         * --- สไตล์สำหรับมือถือ (Responsive) ---
-         */
-        @media screen and (max-width: 768px) {
-            .nav-links {
-                position: absolute;
-                right: 0;
-                top: 70px; /* ใต้ navbar */
-                height: 0; /* เริ่มต้นด้วยความสูง 0 */
-                background-color: var(--nav-bg);
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                width: 100%;
-                clip-path: circle(0% at 100% 0%); /* ซ่อนเมนูด้วยการตัดขอบแบบกลม */
-                transition: clip-path 0.5s ease-out, height 0.5s ease;
-            }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
 
-            .nav-links.nav-active {
-                height: 220px; /* ความสูงเมื่อเปิด */
-                clip-path: circle(141.4% at 100% 0%); /* แสดงเมนู */
-            }
+    .neon-text {
+      animation: pulse 2s infinite;
+    }
 
-            .nav-links li {
-                opacity: 0;
-                transition: opacity 0.5s ease-in 0.3s;
-            }
-
-            .nav-links.nav-active li {
-                opacity: 1;
-            }
-
-            .burger {
-                display: block;
-            }
-
-            /* แอนิเมชันสำหรับปุ่มแฮมเบอร์เกอร์ */
-            .toggle .line1 {
-                transform: rotate(-45deg) translate(-5px, 6px);
-            }
-            .toggle .line2 {
-                opacity: 0;
-            }
-            .toggle .line3 {
-                transform: rotate(45deg) translate(-5px, -6px);
-            }
-        }
-    </style>
+    @keyframes pulse {
+      0%, 100% { text-shadow: 0 0 20px #0ff, 0 0 40px #0ff; }
+      50% { text-shadow: 0 0 40px #0ff, 0 0 80px #0ff; }
+    }
+  </style>
 </head>
 <body>
 
-    <nav class="navbar" id="main-navbar">
-        <a href="#" class="nav-logo">✨ Kawaii Web</a>
-        <ul class="nav-links">
-            <li><a href="#">หน้าแรก</a></li>
-            <li><a href="#">ผลิตภัณฑ์</a></li>
-            <li><a href="#">บริการ</a></li>
-            <li><a href="#">ติดต่อ</a></li>
-        </ul>
-        <div class="burger">
-            <div class="line1"></div>
-            <div class="line2"></div>
-            <div class="line3"></div>
-        </div>
-    </nav>
+  <div id="particles-js"></div>
 
-    <div class="container">
-        <h1>Welcome! 💖</h1>
-        <p>นี่คือเนื้อหาหลักของเว็บไซต์ โค้งมน มินิมอล และใช้สีม่วงพาสเทล ดูอ่อนโยนใช่ไหมล่ะ?</p>
-        <p>ลองเลื่อนหน้าจอลงเพื่อดูเอฟเฟกต์การเปลี่ยนสีของ Navbar!</p>
+  <!-- Custom Cursor -->
+  <div class="cursor"></div>
+  <div class="cursor-follow"></div>
+
+  <div class="container">
+    <div class="glass-card">
+      <h1 class="neon-text">สวัสดีแก &lt;3</h1>
+      <p>ชั้นจัดหน้าเว็บคูลๆ ให้แกเรียบร้อยละนะ<br>ลูกเล่นเต็มข้อ เปิดมาแล้วตาแตกแน่นอน 555</p>
+      <button class="btn">กดชั้นสิรอไรล่ะ!</button>
     </div>
+  </div>
 
-    <div style="height: 1000px;"></div>
-
-    <script>
-        // 1. เมนูแฮมเบอร์เกอร์สำหรับมือถือ (Toggle Menu)
-        const navSlide = () => {
-            const burger = document.querySelector('.burger');
-            const nav = document.querySelector('.nav-links');
-            const navLinks = document.querySelectorAll('.nav-links li');
-
-            burger.addEventListener('click', () => {
-                // เปิด/ปิดเมนู
-                nav.classList.toggle('nav-active');
-                
-                // แอนิเมชันปุ่มแฮมเบอร์เกอร์
-                burger.classList.toggle('toggle');
-            });
-            
-            // ปิดเมนูเมื่อคลิกที่ลิงก์ (สำหรับมือถือ)
-            navLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    nav.classList.remove('nav-active');
-                    burger.classList.remove('toggle');
-                });
-            });
+  <!-- Particles.js -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script>
+    particlesJS("particles-js", {
+      "particles": {
+        "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+        "color": { "value": "#0ff" },
+        "shape": { "type": "circle" },
+        "opacity": { "value": 0.6, "random": true },
+        "size": { "value": 3, "random": true },
+        "line_linked": { "enable": true, "distance": 150, "color": "#0ff", "opacity": 0.3, "width": 1 },
+        "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": true }
+      },
+      "interactivity": {
+        "detect_on": "canvas",
+        "events": {
+          "onhover": { "enable": true, "mode": "repulse" },
+          "onclick": { "enable": true, "mode": "push" },
+          "resize": true
         }
+      },
+      "retina_detect": true
+    });
 
-        // 2. เอฟเฟกต์เปลี่ยนสี Navbar เมื่อเลื่อนหน้าจอ (Scroll Effect)
-        const scrollEffect = () => {
-            const navbar = document.getElementById('main-navbar');
-            const lightColor = '#e1bee7'; // ม่วงอ่อน
-            const darkColor = '#6a1b9a';  // ม่วงเข้ม
+    // Custom Cursor
+    const cursor = document.querySelector('.cursor');
+    const cursorFollow = document.querySelector('.cursor-follow');
 
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 50) {
-                    // เปลี่ยนเป็นม่วงอ่อนและข้อความเป็นม่วงเข้ม
-                    navbar.style.backgroundColor = lightColor;
-                    navbar.style.boxShadow = '0 4px 15px rgba(106, 27, 154, 0.3)';
-                    navbar.querySelectorAll('a').forEach(a => {
-                        a.style.color = darkColor;
-                    });
-                    navbar.querySelector('.burger').querySelectorAll('div').forEach(line => {
-                         line.style.backgroundColor = darkColor;
-                    });
-                } else {
-                    // กลับเป็นสีเดิม (ม่วงเข้ม)
-                    navbar.style.backgroundColor = darkColor;
-                    navbar.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.1)';
-                    navbar.querySelectorAll('a').forEach(a => {
-                        a.style.color = 'white';
-                    });
-                    navbar.querySelector('.burger').querySelectorAll('div').forEach(line => {
-                         line.style.backgroundColor = 'white';
-                    });
-                }
-            });
-        }
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
 
-        // เรียกใช้ฟังก์ชันทั้งหมดเมื่อหน้าเว็บโหลดเสร็จ
-        document.addEventListener('DOMContentLoaded', () => {
-            navSlide();
-            scrollEffect();
-        });
-    </script>
+      cursorFollow.animate({
+        left: e.clientX + 'px',
+        top: e.clientY + 'px'
+      }, { duration: 800, fill: "forwards" });
+    });
+  </script>
 </body>
 </html>
